@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 
 class AppLauncherTest {
-    @Test
-    void appHasAGreeting() {
-        AppLauncher classUnderTest = new AppLauncher();
-        assertNotNull(classUnderTest.getGreeting());
-    }
+  @Test
+  void appHasGreeting() {
+    AppLauncher classUnderTest = new AppLauncher();
+    assertNotNull(classUnderTest.getGreeting());
+  }
 }
