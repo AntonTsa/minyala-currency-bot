@@ -4,13 +4,17 @@
 [versions]
 guava = "33.4.6-jre"
 junit-jupiter = "5.12.1"
-telegrambots = "9.2.0"
+telegrambots = "6.9.7.1"
 mockito = "5.20.0"
+dotenv = "3.2.0"
+logging = "2.0.17"
 gson = "2.11.0"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
+dotenv = { module = "io.github.cdimascio:dotenv-java", version.ref = "dotenv"}
+telegrambots = { module = "org.telegram:telegrambots", version.ref = "telegrambots"}
+logging = { module = "org.slf4j:slf4j-simple", version.ref = "logging"}
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
-telegrambots = { module = "org.telegram:telegrambots-longpolling", version.ref = "telegrambots"}
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito"}
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
