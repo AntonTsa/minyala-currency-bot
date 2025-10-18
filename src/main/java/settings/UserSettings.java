@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserSettings {
-	private Long chatId ;
+	private Long chatId;
 	private int decimalPlaces = 2;
 	private String bank = "Приватбанк";
 	private String currency = "USD";
