@@ -1,14 +1,12 @@
-package org.project.ninjas.minyala.currency.bot.banks.service;
+package org.project.ninjas.minyala.currency.bot.banks.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.BankAggregatorService;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.MonobankService;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.NbuService;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.PrivatBankService;
+import org.project.ninjas.minyala.currency.bot.banks.service.BankAggregatorService;
+import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
 
 /**
  * Aggregates exchange rates from all supported banks:

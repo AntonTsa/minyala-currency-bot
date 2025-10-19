@@ -1,5 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.banks.model;
 
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 /**
@@ -7,6 +9,7 @@ import java.time.LocalDate;
  * Used by Monobank, PrivatBank and NBU implementations.
  * </p>
  */
+@NoArgsConstructor
 public class CurrencyRate {
 
   private String bankName;
@@ -15,12 +18,6 @@ public class CurrencyRate {
   private double sell;
   private double rate;
   private LocalDate date;
-
-  /**
-   * Default constructor.
-   */
-  public CurrencyRate() {
-  }
 
   /**
    * Constructs a new CurrencyRate.

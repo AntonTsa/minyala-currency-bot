@@ -1,4 +1,4 @@
-package org.project.ninjas.minyala.currency.bot.banks.service.impl;
+package org.project.ninjas.minyala.currency.bot.banks.service;
 
 import java.util.List;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;

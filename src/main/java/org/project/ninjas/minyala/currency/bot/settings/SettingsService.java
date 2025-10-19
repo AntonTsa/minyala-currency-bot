@@ -1,11 +1,20 @@
 package org.project.ninjas.minyala.currency.bot.settings;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class SettingsService {
-    public SettingsService() {
-        // Implement
+    private final ConcurrentHashMap<Long, UserSettings> settings = new ConcurrentHashMap<>();
+
+    public UserSettings getUserSetting(Long chatId) {
+        return settings.get(chatId);
+    }
+
+    public void saveUserSettings(UserSettings userSettings) {
+        settings.put(userSettings.getChatId(), userSettings);
     }
 
     public void createUserSettings(Long chatId) {
-        // Implement
+        UserSettings userSettings = new UserSettings(chatId);
+        settings.put(userSettings.getChatId(), userSettings);
     }
 }
