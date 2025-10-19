@@ -18,53 +18,54 @@ import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
  */
 public class PrivatBankService implements BankRateService {
 
-  private static final String API_URL =
-      "https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11";
+    private static final String API_URL =
+            "https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11";
 
-  @Override
-  public String getBankName() {
-    return "PrivatBank";
-  }
-
-  @Override
-  public List<CurrencyRate> getRates() throws Exception {
-    List<CurrencyRate> rates = new ArrayList<>();
-
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(API_URL))
-        .GET()
-        .build();
-
-    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-    if (response.statusCode() != 200) {
-      throw new RuntimeException("Failed to fetch PrivatBank API data: " + response.statusCode());
+    @Override
+    public String getBankName() {
+        return "PrivatBank";
     }
 
-    JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
+    @Override
+    public List<CurrencyRate> getRates() throws Exception {
+        List<CurrencyRate> rates = new ArrayList<>();
 
-    for (JsonElement el : jsonArray) {
-      var obj = el.getAsJsonObject();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_URL))
+                .GET()
+                .build();
 
-      String ccy = obj.get("ccy").getAsString();
-      String base = obj.get("base_ccy").getAsString();
-      double buy = Double.parseDouble(obj.get("buy").getAsString());
-      double sell = Double.parseDouble(obj.get("sale").getAsString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-      // Only add major currencies
-      if (base.equalsIgnoreCase("UAH")) {
-        rates.add(new CurrencyRate(
-            getBankName(),
-            ccy,
-            buy,
-            sell,
-            0.0,
-            LocalDate.now()
-        ));
-      }
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to fetch PrivatBank API data: "
+                    + response.statusCode());
+        }
+
+        JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
+
+        for (JsonElement el : jsonArray) {
+            var obj = el.getAsJsonObject();
+
+            String ccy = obj.get("ccy").getAsString();
+            String base = obj.get("base_ccy").getAsString();
+            double buy = Double.parseDouble(obj.get("buy").getAsString());
+            double sell = Double.parseDouble(obj.get("sale").getAsString());
+
+            // Only add major currencies
+            if (base.equalsIgnoreCase("UAH")) {
+                rates.add(new CurrencyRate(
+                        getBankName(),
+                        ccy,
+                        buy,
+                        sell,
+                        0.0,
+                        LocalDate.now()
+                ));
+            }
+        }
+
+        return rates;
     }
-
-    return rates;
-  }
 }

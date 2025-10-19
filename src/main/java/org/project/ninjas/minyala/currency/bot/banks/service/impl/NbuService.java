@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -11,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
 
@@ -20,51 +22,51 @@ import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
  */
 public class NbuService implements BankRateService {
 
-  private static final String API_URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
+    private static final String API_URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
 
-  @Override
-  public String getBankName() {
-    return "NBU";
-  }
-
-  @Override
-  public List<CurrencyRate> getRates() throws Exception {
-    List<CurrencyRate> rates = new ArrayList<>();
-
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(API_URL))
-        .GET()
-        .build();
-
-    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-    if (response.statusCode() != 200) {
-      throw new RuntimeException("Failed to fetch NBU API data: " + response.statusCode());
+    @Override
+    public String getBankName() {
+        return "NBU";
     }
 
-    JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
+    @Override
+    public List<CurrencyRate> getRates() throws Exception {
+        List<CurrencyRate> rates = new ArrayList<>();
 
-    for (JsonElement el : jsonArray) {
-      JsonObject obj = el.getAsJsonObject();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_URL))
+                .GET()
+                .build();
 
-      String code = obj.get("cc").getAsString();
-      double rate = obj.get("rate").getAsDouble();
-      String date = obj.get("exchangedate").getAsString();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-      // Limit to popular currencies
-      if (code.equals("USD") || code.equals("EUR") || code.equals("GBP") || code.equals("PLN")) {
-        rates.add(new CurrencyRate(
-            getBankName(),
-            code,
-            0.0,
-            0.0,
-            rate,
-            LocalDate.parse(LocalDate.now().toString()) // today’s date
-        ));
-      }
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to fetch NBU API data: " + response.statusCode());
+        }
+
+        JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
+
+        for (JsonElement el : jsonArray) {
+            JsonObject obj = el.getAsJsonObject();
+
+            String code = obj.get("cc").getAsString();
+            double rate = obj.get("rate").getAsDouble();
+            String date = obj.get("exchangedate").getAsString();
+
+            // Limit to popular currencies
+            if (code.equals("USD") || code.equals("EUR") || code.equals("GBP") || code.equals("PLN")) {
+                rates.add(new CurrencyRate(
+                        getBankName(),
+                        code,
+                        0.0,
+                        0.0,
+                        rate,
+                        LocalDate.parse(LocalDate.now().toString()) // today’s date
+                ));
+            }
+        }
+
+        return rates;
     }
-
-    return rates;
-  }
 }
