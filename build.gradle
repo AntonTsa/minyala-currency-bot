@@ -43,9 +43,9 @@ java {
 }
 
 checkstyle {
-    toolVersion = '10.20.1'
+    toolVersion = '12.0.1'
     configFile = file("checkstyle.xml")
-    ignoreFailures = true
+    ignoreFailures = false
 }
 
 checkstyleMain {
