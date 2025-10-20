@@ -5,6 +5,7 @@ import java.util.List;
 import org.project.ninjas.minyala.currency.bot.bot.BotController;
 import org.project.ninjas.minyala.currency.bot.bot.CurrencyBot;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotStateContext;
+import org.project.ninjas.minyala.currency.bot.bot.state.MainMenuStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.StartStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.UserStateService;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
@@ -41,6 +42,8 @@ public final class AppLauncher {
             return;
         }
 
+        SettingsService settingsService = new SettingsService();
+
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(
                     DefaultBotSession.class
@@ -54,8 +57,9 @@ public final class AppLauncher {
                                     new BotStateContext(
                                             List.of(
                                                     new StartStateHandler(
-                                                            new SettingsService()
-                                                    )
+                                                            settingsService
+                                                    ),
+                                                    new MainMenuStateHandler()
                                             )
                                     )
                             )

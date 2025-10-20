@@ -42,12 +42,14 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        if (update.hasMessage() || update.hasCallbackQuery()) {
             try {
                 execute(botController.handleUpdate(update));
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
             }
+        } else {
+            LOGGER.error("Update has neither message nor callback query");
         }
     }
 }

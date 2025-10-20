@@ -17,7 +17,12 @@ public class BotController {
     }
 
     public SendMessage handleUpdate(Update update) {
-        Long chatId = update.getMessage().getChatId();
+        Long chatId;
+        if (update.hasMessage()) {
+            chatId = update.getMessage().getChatId();
+        } else {
+            chatId = update.getCallbackQuery().getMessage().getChatId();
+        }
         BotState currentState = userStateService.getUserState(chatId);
 
         BotResponse response = botStateContext.process(currentState, update);

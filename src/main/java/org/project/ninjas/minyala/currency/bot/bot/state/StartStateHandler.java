@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 /**
- * Реалізація головного меню.
+ * First step implementation
  */
 public class StartStateHandler implements BotStateHandler {
     private final SettingsService settingsService;
@@ -45,7 +45,8 @@ public class StartStateHandler implements BotStateHandler {
                         InlineKeyboardButton.builder()
                                 .text("Отримати інформацію")
                                 .callbackData("CURRENT_INFO")
-                                .build(),
+                                .build()),
+                        List.of(
                         InlineKeyboardButton.builder()
                                 .text("Змінити налаштування")
                                 .callbackData("SETTINGS")
