@@ -28,4 +28,15 @@ public class SettingsService {
         UserSettings userSettings = new UserSettings(chatId);
         settings.put(userSettings.getChatId(), userSettings);
     }
+
+    /**
+     * Returns existing settings or creates defaults for the given chat id.
+     *
+     * @param chatId the user's chat id.
+     * @return existing or newly created settings.
+     */
+    public UserSettings getOrCreate(Long chatId) {
+        return settings.computeIfAbsent(chatId, UserSettings::new);
+    }
+
 }

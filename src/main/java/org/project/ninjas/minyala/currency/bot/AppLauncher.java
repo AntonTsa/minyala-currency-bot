@@ -4,8 +4,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.util.List;
 import org.project.ninjas.minyala.currency.bot.bot.BotController;
 import org.project.ninjas.minyala.currency.bot.bot.CurrencyBot;
+import org.project.ninjas.minyala.currency.bot.bot.state.BankSelectionStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotStateContext;
 import org.project.ninjas.minyala.currency.bot.bot.state.MainMenuStateHandler;
+import org.project.ninjas.minyala.currency.bot.bot.state.SettingsStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.StartStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.UserStateService;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
@@ -63,12 +65,15 @@ public final class AppLauncher {
                                                     new StartStateHandler(
                                                             settingsService
                                                     ),
-                                                    new MainMenuStateHandler()
+                                                    new MainMenuStateHandler(),
+                                                    new SettingsStateHandler(settingsService),
+                                                    new BankSelectionStateHandler(settingsService)
                                             )
                                     )
                             )
                     )
             );
+
         } catch (TelegramApiException e) {
             LOGGER.error(e.getMessage());
         }

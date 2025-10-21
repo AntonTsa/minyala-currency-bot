@@ -10,14 +10,14 @@ import lombok.Data;
 public class UserSettings {
     private Long chatId;
     private int decimalPlaces = 2;
-    private String bank = "Приватбанк";
+    private Bank bank = Bank.PRIVATBANK;
     private List<String> currency = List.of("USD");
     private String notifyTime = "09:00";
 
     /**
-     * Constructor to create default settings.
+     * Constructs default settings for the given chat id.
      *
-     * @param chatId - user's chat id
+     * @param chatId the user's chat id.
      */
     public UserSettings(Long chatId) {
         this.chatId = chatId;
