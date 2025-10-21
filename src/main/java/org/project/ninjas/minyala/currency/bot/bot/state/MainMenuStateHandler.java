@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 /**
- * Handler for Main Menu buttons
+ * Handler for Main Menu buttons.
  */
 public class MainMenuStateHandler implements BotStateHandler {
 
@@ -31,6 +31,12 @@ public class MainMenuStateHandler implements BotStateHandler {
         };
     }
 
+    /**
+     * Create a reply to action not defined by bot logic.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse getExceptionReply(Long chatId) {
 
         return new BotResponse(
@@ -43,6 +49,12 @@ public class MainMenuStateHandler implements BotStateHandler {
         );
     }
 
+    /**
+     * Create a reply if button "Отримати інформацію" pressed.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse getInfo(long chatId) {
         return new BotResponse(
                 SendMessage.builder()
@@ -54,6 +66,12 @@ public class MainMenuStateHandler implements BotStateHandler {
         );
     }
 
+    /**
+     * Create a reply if button "Змінити налаштування" pressed.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse getSettingsMenu(long chatId) {
         SendMessage message = SendMessage.builder()
                 .chatId(chatId)

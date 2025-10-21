@@ -4,6 +4,7 @@ import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.MAIN_ME
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.START;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,14 +14,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 /**
- * First step implementation
+ * First step implementation.
  */
+@RequiredArgsConstructor
 public class StartStateHandler implements BotStateHandler {
     private final SettingsService settingsService;
-
-    public StartStateHandler(SettingsService settingsService) {
-        this.settingsService = settingsService;
-    }
 
     @Override
     public BotState getHandledState() {

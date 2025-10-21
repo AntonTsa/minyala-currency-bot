@@ -21,6 +21,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     /**
      * Constructor with params.
+     *
      * @param botToken - token, got from.env
      * @param botUsername - username, got from .env
      * @param botController - controller for handling updates

@@ -15,6 +15,9 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+/**
+ * Main class of the application. Setups and launches it.
+ */
 public final class AppLauncher {
 
     /**
@@ -29,6 +32,7 @@ public final class AppLauncher {
 
     /**
      * Main method that launches app.
+     *
      * @param args - args
      */
     public static void main(final String[] args) {
