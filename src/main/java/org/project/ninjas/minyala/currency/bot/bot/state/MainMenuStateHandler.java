@@ -118,8 +118,13 @@ public class MainMenuStateHandler implements BotStateHandler {
                         InlineKeyboardButton.builder()
                                 .text("Час оповіщення")
                                 .callbackData("NOTIFY_CHOICE")
-                                .build()
-                ))
+                                .build()),
+                        List.of(
+                                InlineKeyboardButton.builder()
+                                        .text("Назад")
+                                        .callbackData("BACK")
+                                        .build())
+                )
         );
     }
 }
