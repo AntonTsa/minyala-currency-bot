@@ -7,5 +7,6 @@ public enum BotState {
     DECIMAL_CHOICE,
     BANK_CHOICE,
     CURRENCY_CHOICE,
-    NOTIFY_CHOICE
+    NOTIFY_CHOICE,
+    CURRENT_INFO,
 }

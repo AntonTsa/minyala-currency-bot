@@ -7,6 +7,7 @@ import org.project.ninjas.minyala.currency.bot.bot.CurrencyBot;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotStateContext;
 import org.project.ninjas.minyala.currency.bot.bot.state.StartStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.UserStateService;
+import org.project.ninjas.minyala.currency.bot.current_info.CurrentChecking;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-public final class AppLauncher {
+public final class  AppLauncher {
 
     /**
      * Logger for AppLauncher.
