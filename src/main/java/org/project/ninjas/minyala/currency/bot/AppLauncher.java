@@ -5,6 +5,7 @@ import java.util.List;
 import org.project.ninjas.minyala.currency.bot.bot.BotController;
 import org.project.ninjas.minyala.currency.bot.bot.CurrencyBot;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotStateContext;
+import org.project.ninjas.minyala.currency.bot.bot.state.MainMenuStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.StartStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.UserStateService;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
@@ -14,6 +15,9 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+/**
+ * Main class of the application. Setups and launches it.
+ */
 public final class AppLauncher {
 
     /**
@@ -28,6 +32,7 @@ public final class AppLauncher {
 
     /**
      * Main method that launches app.
+     *
      * @param args - args
      */
     public static void main(final String[] args) {
@@ -40,6 +45,8 @@ public final class AppLauncher {
             LOGGER.error("BOT_TOKEN or BOT_USERNAME missing in .env");
             return;
         }
+
+        SettingsService settingsService = new SettingsService();
 
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(
@@ -54,8 +61,9 @@ public final class AppLauncher {
                                     new BotStateContext(
                                             List.of(
                                                     new StartStateHandler(
-                                                            new SettingsService()
-                                                    )
+                                                            settingsService
+                                                    ),
+                                                    new MainMenuStateHandler()
                                             )
                                     )
                             )

@@ -21,6 +21,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     /**
      * Constructor with params.
+     *
      * @param botToken - token, got from.env
      * @param botUsername - username, got from .env
      * @param botController - controller for handling updates
@@ -42,12 +43,14 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        if (update.hasMessage() || update.hasCallbackQuery()) {
             try {
                 execute(botController.handleUpdate(update));
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
             }
+        } else {
+            LOGGER.error("Update has neither message nor callback query");
         }
     }
 }
