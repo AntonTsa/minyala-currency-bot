@@ -1,7 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.MAIN_MENU;
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.SETTINGS;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
 
 import java.util.List;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
@@ -18,7 +18,7 @@ public class MainMenuStateHandler implements BotStateHandler {
 
     @Override
     public BotState getHandledState() {
-        return MAIN_MENU;
+        return HANDLE_MAIN_MENU;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MainMenuStateHandler implements BotStateHandler {
                 .text("Налаштування")
                 .replyMarkup(getSettingsReplyMarkup())
                 .build();
-        return new BotResponse(message, SETTINGS);
+        return new BotResponse(message, HANDLE_SETTINGS);
     }
 
     private ReplyKeyboard getMainMenuReplyMarkup() {

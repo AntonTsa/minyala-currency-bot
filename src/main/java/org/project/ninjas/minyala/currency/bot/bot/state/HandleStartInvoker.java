@@ -1,7 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.MAIN_MENU;
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.START;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_START;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class StartStateHandler implements BotStateHandler {
 
     @Override
     public BotState getHandledState() {
-        return START;
+        return HANDLE_START;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class StartStateHandler implements BotStateHandler {
                 .replyMarkup(getReplyMarkup())
                 .build();
 
-        return new BotResponse(message, MAIN_MENU);
+        return new BotResponse(message, HANDLE_MAIN_MENU);
     }
 
     private ReplyKeyboard getReplyMarkup() {

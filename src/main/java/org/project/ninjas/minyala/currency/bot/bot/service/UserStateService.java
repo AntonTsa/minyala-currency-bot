@@ -1,6 +1,6 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.START;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_START;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +27,7 @@ public class UserStateService {
      * @return - current state for the user
      */
     public BotState getUserState(Long userId) {
-        return userStates.getOrDefault(userId, START);
+        return userStates.getOrDefault(userId, HANDLE_START);
     }
 
     /**
