@@ -1,4 +1,4 @@
-package org.project.ninjas.minyala.currency.bot.info;
+package org.project.ninjas.minyala.currency.bot.bot.info;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 

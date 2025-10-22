@@ -1,9 +1,10 @@
 package org.project.ninjas.minyala.currency.bot.bot;
 
 import lombok.RequiredArgsConstructor;
+import org.project.ninjas.minyala.currency.bot.bot.service.InvokersService;
+import org.project.ninjas.minyala.currency.bot.bot.service.UserStateService;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
-import org.project.ninjas.minyala.currency.bot.bot.state.BotStateContext;
-import org.project.ninjas.minyala.currency.bot.bot.state.UserStateService;
+import org.project.ninjas.minyala.currency.bot.bot.state.BotStateInvoker;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -13,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class BotController {
     private final UserStateService userStateService;
-    private final BotStateContext botStateContext;
+    private final InvokersService invokersService;
 
     /**
      * Method for user update management. Firstly, it gets id of chat, then by the id
@@ -24,18 +25,23 @@ public class BotController {
      * @return reply
      */
     public SendMessage handleUpdate(Update update) {
-        Long chatId;
+        Long userId;
+
         if (update.hasMessage()) {
-            chatId = update.getMessage().getChatId();
+            userId = update.getMessage().getFrom().getId();
         } else {
-            chatId = update.getCallbackQuery().getMessage().getChatId();
+            userId = update.getCallbackQuery().getFrom().getId();
         }
-        BotState currentState = userStateService.getUserState(chatId);
 
-        BotResponse response = botStateContext.process(currentState, update);
+        BotState currentState = userStateService.getUserState(update);
 
-        userStateService.setUserState(chatId, response.nextState());
+        BotStateInvoker invoker = invokersService.process(currentState);
+
+        BotResponse response = invoker.invoke(update);
+
+        userStateService.setUserState(userId, response.nextState());
 
         return response.message();
     }
+
 }

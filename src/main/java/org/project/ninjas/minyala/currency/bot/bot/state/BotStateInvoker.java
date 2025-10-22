@@ -6,11 +6,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 /**
  * Generic interface for bot state handling.
  */
-public interface BotStateHandler {
+public interface BotStateInvoker {
     /**
      * @return the state is handling
      */
-    BotState getHandledState();
+    BotState getInvokedState();
 
     /**
      * Method for handling update in particular state.
@@ -18,5 +18,5 @@ public interface BotStateHandler {
      * @param update - user's action
      * @return application response
      */
-    BotResponse handle(Update update);
+    BotResponse invoke(Update update);
 }

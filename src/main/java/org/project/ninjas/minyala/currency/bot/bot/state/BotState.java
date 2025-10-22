@@ -7,19 +7,19 @@ public enum BotState {
     /**
      * Initial stage, user press button "/start".
      */
-    START,
+    HANDLE_START,
     /**
      * Main Menu handling stage.
      */
-    MAIN_MENU,
+    HANDLE_MAIN_MENU,
     /**
      * Settings menu handling stage.
      */
-    SETTINGS,
+    HANDLE_SETTINGS,
     /**
      * Decimal options handling stage.
      */
-    DECIMAL_CHOICE,
+    HANDLE_DECIMAL_CHOICE,
     /**
      * Bank options handling stage.
      */
@@ -31,5 +31,5 @@ public enum BotState {
     /**
      * Notify time options handling stage.
      */
-    NOTIFY_CHOICE,
+    NOTIFY_CHOICE
 }
