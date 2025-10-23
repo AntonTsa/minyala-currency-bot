@@ -1,6 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.util;
 
 import java.util.List;
+
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -65,4 +66,40 @@ public class ReplyMarkupBuilder {
         );
     }
 
+    public static InlineKeyboardMarkup decimalReplyMarkup() {
+        return new InlineKeyboardMarkup(
+                List.of(
+                        List.of(
+                                Utils.btn("  1", "1"),
+                                Utils.btn("✅2", "2"),
+                                Utils.btn("  3", "3")),
+                        List.of(Utils.btn("НАЗАД", "BACK")),
+                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
+
+                ));
+    }
+
+    public static InlineKeyboardMarkup bankReplyMarkup() {
+        return new InlineKeyboardMarkup(
+                List.of(
+                        List.of(Utils.btn("НАЗАД", "BACK")),
+                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
+                ));
+    }
+
+    public static InlineKeyboardMarkup currencyReplyMarkup() {
+        return new InlineKeyboardMarkup(
+                List.of(
+                        List.of(Utils.btn("НАЗАД", "BACK")),
+                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
+                ));
+    }
+
+    public static InlineKeyboardMarkup notifyReplyMarkup() {
+        return new InlineKeyboardMarkup(
+                List.of(
+                        List.of(Utils.btn("НАЗАД", "BACK")),
+                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
+                ));
+    }
 }
