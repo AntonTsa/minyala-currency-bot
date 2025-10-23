@@ -29,7 +29,7 @@ public class SettingsService {
         settings.put(userSettings.getUserId(), userSettings);
     }
 
-    public UserSettings getUserSettings(Long userId){
+    public UserSettings getUsersSettings(Long userId){
         return settings.get(userId);
     }
 
