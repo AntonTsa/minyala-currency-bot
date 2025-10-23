@@ -1,13 +1,17 @@
 package org.project.ninjas.minyala.currency.bot.bot.util;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 /**
  * Utility class for building keyboard layouts.
  */
+@RequiredArgsConstructor
 public class ReplyMarkupBuilder {
+   private final SettingsService set;
     /**
      *  Button BACK.
      */
@@ -103,19 +107,6 @@ public class ReplyMarkupBuilder {
      * @return the bank inline keyboard markup
      */
     public static InlineKeyboardMarkup bankReplyMarkup() {
-        return new InlineKeyboardMarkup(
-                List.of(
-                        List.of(btn("НАЗАД", BACK)),
-                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
-                ));
-    }
-
-    /**
-     * Builds the currency menu reply markup.
-     *
-     * @return the currency inline keyboard markup
-     */
-    public static InlineKeyboardMarkup currencyReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
                         List.of(btn("НАЗАД", BACK)),

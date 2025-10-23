@@ -1,15 +1,23 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.decimalReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.notifyReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
+import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
+import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
  *  Setting menu button handler.
  */
+@RequiredArgsConstructor
 public class HandleSettingsInvoker implements BotStateInvoker {
+    private final SettingsService settingsService;
 
     @Override
     public BotState getInvokedState() {
@@ -70,14 +78,9 @@ public class HandleSettingsInvoker implements BotStateInvoker {
      * @return correspondent bot response
      */
     private BotResponse handleCurrencyButton(long chatId) {
-        return new BotResponse(
-                SendMessage.builder()
-                        .chatId(chatId)
-                        .text("Оберіть валюту")
-                        .replyMarkup(currencyReplyMarkup())
-                        .build(),
-                BotState.CURRENCY_CHOICE
-        );
+        // Delegate to the existing invoker logic
+        HandleCurrencyChoiceInvoker currencyHandler = new HandleCurrencyChoiceInvoker(settingsService);
+        return currencyHandler.invokeFromParent(chatId);
     }
 
     /**
@@ -91,7 +94,7 @@ public class HandleSettingsInvoker implements BotStateInvoker {
                 SendMessage.builder()
                         .chatId(chatId)
                         .text("Оберіть час сповіщень")
-                        .replyMarkup(currencyReplyMarkup())
+                        .replyMarkup(notifyReplyMarkup())
                         .build(),
                 BotState.NOTIFY_CHOICE
         );
