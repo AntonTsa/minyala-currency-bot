@@ -1,16 +1,16 @@
 package org.project.ninjas.minyala.currency.bot.bot.service;
 
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.*;
+
 import java.util.EnumMap;
 import java.util.Map;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotStateInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleDecimalInvoker;
 import org.project.ninjas.minyala.currency.bot.bot.state.HandleMainMenuInvoker;
 import org.project.ninjas.minyala.currency.bot.bot.state.HandleSettingsInvoker;
 import org.project.ninjas.minyala.currency.bot.bot.state.HandleStartInvoker;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleDecimalInvoker;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
-
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.*;
 
 /**
  * BotStateContext saves connection of each bot state with its handler.

@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
- *
+ *  Setting menu button handler.
  */
 public class HandleSettingsInvoker implements BotStateInvoker {
 
@@ -29,6 +29,12 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         };
     }
 
+    /**
+     * Create a reply to action pressing decimal button.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse handleDecimalButton(long chatId) {
         return new BotResponse(
                 SendMessage.builder()
@@ -40,6 +46,12 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         );
     }
 
+    /**
+     * Create a reply to action pressing bank button.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse handleBankButton(long chatId) {
         return new BotResponse(
                 SendMessage.builder()
@@ -51,6 +63,12 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         );
     }
 
+    /**
+     * Create a reply to action pressing currency button.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse handleCurrencyButton(long chatId) {
         return new BotResponse(
                 SendMessage.builder()
@@ -62,6 +80,12 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         );
     }
 
+    /**
+     * Create a reply to action pressing notify button.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse handleNotifyButton(long chatId) {
         return new BotResponse(
                 SendMessage.builder()
@@ -73,6 +97,12 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         );
     }
 
+    /**
+     * Create a reply to action back to previous menu.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
     private BotResponse handleBackButton(long chatId) {
         return new BotResponse(
                 SendMessage.builder()
@@ -100,5 +130,4 @@ public class HandleSettingsInvoker implements BotStateInvoker {
                 this.getInvokedState()
         );
     }
-
 }
