@@ -1,0 +1,82 @@
+package org.project.ninjas.minyala.currency.bot.bot.state;
+
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
+
+import lombok.RequiredArgsConstructor;
+import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+/**
+ * Handler for Main Menu buttons.
+ */
+@RequiredArgsConstructor
+public class HandleMainMenuInvoker implements BotStateInvoker {
+
+    @Override
+    public BotState getInvokedState() {
+        return HANDLE_MAIN_MENU;
+    }
+
+    @Override
+    public BotResponse invoke(Update update) {
+        long chatId = update.getCallbackQuery().getMessage().getChatId();
+        return switch (update.getCallbackQuery().getData()) {
+            case "SETTINGS_BTN" -> handleSettingsButton(chatId);
+            case "CURRENT_INFO_BTN" -> handleCurrentInfoButton(chatId);
+            default -> handleExceptionalCases(chatId);
+        };
+    }
+
+    /**
+     * Create a reply to action not defined by bot logic.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
+    private BotResponse handleExceptionalCases(Long chatId) {
+        return new BotResponse(
+                SendMessage.builder()
+                        .chatId(chatId)
+                        .text("Немає такої команди")
+                        .replyMarkup(mainMenuReplyMarkup())
+                        .build(),
+                this.getInvokedState()
+        );
+    }
+
+    /**
+     * Create a reply if button "Отримати інформацію" pressed.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
+    private BotResponse handleCurrentInfoButton(long chatId) {
+        return new BotResponse(
+                SendMessage.builder()
+                        .chatId(chatId)
+                        .text("Немає даних")
+                        .replyMarkup(mainMenuReplyMarkup())
+                        .build(),
+                this.getInvokedState()
+        );
+    }
+
+    /**
+     * Create a reply if button "Змінити налаштування" pressed.
+     *
+     * @param chatId user's chat id
+     * @return correspondent bot response
+     */
+    private BotResponse handleSettingsButton(long chatId) {
+        SendMessage message = SendMessage.builder()
+                .chatId(chatId)
+                .text("Налаштування")
+                .replyMarkup(settingsReplyMarkup())
+                .build();
+        return new BotResponse(message, HANDLE_SETTINGS);
+    }
+}

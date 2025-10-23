@@ -1,37 +1,37 @@
-package org.project.ninjas.minyala.currency.bot.current_info;
+package org.project.ninjas.minyala.currency.bot.bot.info;
+
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
-import org.project.ninjas.minyala.currency.bot.bot.state.BotStateHandler;
+import org.project.ninjas.minyala.currency.bot.bot.state.BotStateInvoker;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.MAIN_MENU;
-
-/**Реалізація отримання інформації**/
-public class CurrentChecking implements BotStateHandler {
+/**
+ * Реалізація отримання інформації.
+ **/
+public class CurrentChecking implements BotStateInvoker {
 
     @Override
-    public BotState getHandledState() {
-        return MAIN_MENU;
+    public BotState getInvokedState() {
+        return HANDLE_MAIN_MENU;
     }
 
     @Override
-    public BotResponse handle(Update update) {
+    public BotResponse invoke(Update update) {
         long chatId = 0;
 
         if (update.hasCallbackQuery()) {
             chatId = update.getCallbackQuery().getMessage().getChatId();
         } else if (update.hasMessage()) {
             chatId = update.getMessage().getChatId();
-        } else {
-            chatId = 0;
         }
 
         SendMessage message;
 
-        if (update.hasCallbackQuery() &&
-                "CURRENT_INFO".equals(update.getCallbackQuery().getData())) {
+        if (update.hasCallbackQuery()
+                && "CURRENT_INFO".equals(update.getCallbackQuery().getData())) {
 
             String bankName = "ПриватБанк";
             String currency = "USD/UAH";
@@ -54,7 +54,7 @@ public class CurrentChecking implements BotStateHandler {
                     .build();
         }
 
-        return new BotResponse(message, MAIN_MENU);
+        return new BotResponse(message, HANDLE_MAIN_MENU);
     }
 }
 
