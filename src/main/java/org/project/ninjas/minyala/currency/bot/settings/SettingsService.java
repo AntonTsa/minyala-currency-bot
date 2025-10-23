@@ -8,14 +8,14 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class SettingsService {
-    private static final ConcurrentHashMap<Long, UserSettings> settings = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, UserSettings> settings = new ConcurrentHashMap<>();
 
     /**
      * Save custom user's settings.
      *
      * @param userSettings - custom settings
      */
-    public static void saveUserSettings(UserSettings userSettings) {
+    public void saveUserSettings(UserSettings userSettings) {
         settings.put(userSettings.getUserId(), userSettings);
     }
 
@@ -24,16 +24,16 @@ public class SettingsService {
      *
      * @param userId - user's chat id
      */
-    public static void createUserSettings(Long userId) {
+    public void createUserSettings(Long userId) {
         UserSettings userSettings = new UserSettings(userId);
         settings.put(userSettings.getUserId(), userSettings);
     }
 
-    public static UserSettings getUserSettings(Long userId){
+    public UserSettings getUserSettings(Long userId){
         return settings.get(userId);
     }
 
-    public static ConcurrentHashMap<Long, UserSettings> getAllUserSettings(Long userId){
+    public ConcurrentHashMap<Long, UserSettings> getAllUserSettings(Long userId){
         return settings;
     }
 }
