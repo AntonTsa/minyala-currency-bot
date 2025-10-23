@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class UserSettings {
-    private Long chatId;
+    private Long userId;
     private int decimalPlaces = 2;
     private String bank = "Приватбанк";
     private List<String> currency = List.of("USD");
@@ -17,9 +17,9 @@ public class UserSettings {
     /**
      * Constructor to create default settings.
      *
-     * @param chatId - user's chat id
+     * @param userId - user's chat id
      */
-    public UserSettings(Long chatId) {
-        this.chatId = chatId;
+    public UserSettings(Long userId) {
+        this.userId = userId;
     }
 }

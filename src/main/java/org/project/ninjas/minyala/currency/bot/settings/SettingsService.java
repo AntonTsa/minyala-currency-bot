@@ -16,16 +16,24 @@ public class SettingsService {
      * @param userSettings - custom settings
      */
     public void saveUserSettings(UserSettings userSettings) {
-        settings.put(userSettings.getChatId(), userSettings);
+        settings.put(userSettings.getUserId(), userSettings);
     }
 
     /**
      * Save default user's settings by his chatId.
      *
-     * @param chatId - user's chat id
+     * @param userId - user's chat id
      */
-    public void createUserSettings(Long chatId) {
-        UserSettings userSettings = new UserSettings(chatId);
-        settings.put(userSettings.getChatId(), userSettings);
+    public void createUserSettings(Long userId) {
+        UserSettings userSettings = new UserSettings(userId);
+        settings.put(userSettings.getUserId(), userSettings);
+    }
+
+    public UserSettings getUserSettings(Long userId){
+        return settings.get(userId);
+    }
+
+    public ConcurrentHashMap<Long, UserSettings> getAllUserSettings(Long userId){
+        return settings;
     }
 }
