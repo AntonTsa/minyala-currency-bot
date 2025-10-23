@@ -1,13 +1,12 @@
 package org.project.ninjas.minyala.currency.bot.bot.service;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_START;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.*;
 
 import java.util.EnumMap;
 import java.util.Map;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotStateInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleDecimalInvoker;
 import org.project.ninjas.minyala.currency.bot.bot.state.HandleMainMenuInvoker;
 import org.project.ninjas.minyala.currency.bot.bot.state.HandleSettingsInvoker;
 import org.project.ninjas.minyala.currency.bot.bot.state.HandleStartInvoker;
@@ -28,6 +27,7 @@ public class InvokersService {
         invokers.put(HANDLE_START, new HandleStartInvoker(settingsService));
         invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker());
         invokers.put(HANDLE_SETTINGS, new HandleSettingsInvoker());
+        invokers.put(HANDLE_DECIMAL_CHOICE, new HandleDecimalInvoker(settingsService));
         // Add other invokers here
     }
 

@@ -1,7 +1,6 @@
 package org.project.ninjas.minyala.currency.bot.bot.util;
 
 import java.util.List;
-
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -9,6 +8,19 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
  * Utility class for building keyboard layouts.
  */
 public class ReplyMarkupBuilder {
+    /**
+     *  Button BACK.
+     */
+    public static final String BACK = "BACK";
+    /**
+     *  Button BACK to main menu.
+     */
+    public static final String BACKALL = "BACKALL";
+
+    private ReplyMarkupBuilder() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     /**
      * Builds the main menu reply markup.
      *
@@ -37,69 +49,115 @@ public class ReplyMarkupBuilder {
      */
     public static InlineKeyboardMarkup settingsReplyMarkup() {
         return new InlineKeyboardMarkup(
-                List.of(List.of(
-                                InlineKeyboardButton.builder()
-                                        .text("Кількість знаків після коми")
-                                        .callbackData("DECIMAL_CHOICE")
-                                        .build()),
-                        List.of(
-                                InlineKeyboardButton.builder()
-                                        .text("Банк")
-                                        .callbackData("BANK_CHOICE")
-                                        .build()),
-                        List.of(
-                                InlineKeyboardButton.builder()
-                                        .text("Валюти")
-                                        .callbackData("CURRENCY_CHOICE")
-                                        .build()),
-                        List.of(
-                                InlineKeyboardButton.builder()
-                                        .text("Час оповіщення")
-                                        .callbackData("NOTIFY_CHOICE")
-                                        .build()),
-                        List.of(
-                                InlineKeyboardButton.builder()
-                                        .text("Назад")
-                                        .callbackData("BACK")
-                                        .build())
+                List.of(
+                        List.of(btn("Кількість знаків після коми", "DECIMAL_CHOICE")),
+                        List.of(btn("Банк", "BANK_CHOICE")),
+                        List.of(btn("Валюти", "CURRENCY_CHOICE")),
+                        List.of(btn("Час оповіщення", "NOTIFY_CHOICE")),
+                        List.of(btn("Назад", BACK))
                 )
         );
     }
 
+    /**
+     * Builds the decimal menu reply markup.
+     *
+     * @return the decimal inline keyboard markup
+     */
     public static InlineKeyboardMarkup decimalReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(
-                                Utils.btn("  1", "1"),
-                                Utils.btn("✅2", "2"),
-                                Utils.btn("  3", "3")),
-                        List.of(Utils.btn("НАЗАД", "BACK")),
-                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
-
+                        List.of(btn("  1", "1"),
+                                btn("✅2", "2"),
+                                btn("  3", "3")),
+                        List.of(btn("НАЗАД", BACK)),
+                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
                 ));
     }
 
+    /**
+     * Builds the decimal menu With Choose reply markup.
+     *
+     * @param btn1 first button
+     * @param btn2 second button
+     * @param btn3 third button
+     * @return the decimal inline keyboard markup
+     */
+    public static InlineKeyboardMarkup decimalReplyMarkupWithChoose(
+            String btn1,
+            String btn2,
+            String btn3) {
+        return new InlineKeyboardMarkup(
+                List.of(
+                        List.of(btn(btn1, "1"),
+                                btn(btn2, "2"),
+                                btn(btn3, "3")),
+                        List.of(btn("НАЗАД", BACK)),
+                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
+                ));
+    }
+
+    /**
+     * Builds the bank menu reply markup.
+     *
+     * @return the bank inline keyboard markup
+     */
     public static InlineKeyboardMarkup bankReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(Utils.btn("НАЗАД", "BACK")),
-                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
+                        List.of(btn("НАЗАД", BACK)),
+                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
                 ));
     }
 
+    /**
+     * Builds the currency menu reply markup.
+     *
+     * @return the currency inline keyboard markup
+     */
     public static InlineKeyboardMarkup currencyReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(Utils.btn("НАЗАД", "BACK")),
-                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
+                        List.of(btn("НАЗАД", BACK)),
+                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
                 ));
     }
 
+    /**
+     * Builds the currency menu reply markup.
+     *
+     * @return the currency inline keyboard markup
+     */
     public static InlineKeyboardMarkup notifyReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(Utils.btn("НАЗАД", "BACK")),
-                        List.of(Utils.btn("ГОЛОВНЕ МЕНЮ", "BACKALL"))
+                        List.of(btn("НАЗАД", BACK)),
+                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
                 ));
+    }
+
+    /**
+     * Maker buttons by text and data.
+     *
+     * @param text - text on the button
+     * @param data - button's data
+     *
+     * @return done button.
+     */
+    public static InlineKeyboardButton btn(String text, String data) {
+        InlineKeyboardButton button = new InlineKeyboardButton(text);
+        button.setCallbackData(data);
+        return button;
+    }
+
+    /**
+     * Make buttons with ✅ .
+     *
+     * @param text - text on the button
+     *
+     * @return new text button.
+     */
+    public static String btnWithChoose(String text) {
+        return "✅ " + text;
     }
 }
