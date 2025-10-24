@@ -4,13 +4,7 @@ import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.*;
 
 import java.util.EnumMap;
 import java.util.Map;
-import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
-import org.project.ninjas.minyala.currency.bot.bot.state.BotStateInvoker;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleCurrencyChoiceInvoker;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleDecimalInvoker;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleMainMenuInvoker;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleSettingsInvoker;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleStartInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.*;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 
 /**
@@ -29,9 +23,11 @@ public class InvokersService {
         invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker(settingsService));
         invokers.put(HANDLE_SETTINGS, new HandleSettingsInvoker(settingsService));
         invokers.put(HANDLE_DECIMAL_CHOICE, new HandleDecimalInvoker(settingsService));
+        invokers.put(BANK_CHOICE, new HandleBankInvoker(settingsService));
         invokers.put(CURRENCY_CHOICE, new HandleCurrencyChoiceInvoker(settingsService));
         // Add other invokers here
     }
+
     /**
      * The method gets update from user and current state, and send the update to
      * corresponding handler/ After the wor has done, it sends respond back.
