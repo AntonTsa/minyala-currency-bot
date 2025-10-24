@@ -8,7 +8,6 @@ import org.project.ninjas.minyala.currency.bot.bot.state.BotStateContext;
 import org.project.ninjas.minyala.currency.bot.bot.state.MainMenuStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.StartStateHandler;
 import org.project.ninjas.minyala.currency.bot.bot.state.UserStateService;
-import org.project.ninjas.minyala.currency.bot.current_info.CurrentChecking;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

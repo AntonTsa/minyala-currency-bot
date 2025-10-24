@@ -1,4 +1,4 @@
-package org.project.ninjas.minyala.currency.bot.current_info;
+/*package org.project.ninjas.minyala.currency.bot.current_info;
 
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
@@ -6,12 +6,13 @@ import org.project.ninjas.minyala.currency.bot.bot.state.BotStateHandler;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.MAIN_MENU;*/
 
 /**Реалізація отримання інформації**/
-public class CurrentChecking implements BotStateHandler {
+/*  public  class CurrentChecking implements BotStateHandler {
 
-    @Override
+
+  @Override
     public BotState getHandledState() {
         return MAIN_MENU;
     }
@@ -56,5 +57,5 @@ public class CurrentChecking implements BotStateHandler {
 
         return new BotResponse(message, MAIN_MENU);
     }
-}
+}*/
 

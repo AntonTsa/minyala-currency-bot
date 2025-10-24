@@ -4,7 +4,11 @@ import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.MAIN_ME
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.SETTINGS;
 
 import java.util.List;
+
+import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
+import org.project.ninjas.minyala.currency.bot.banks.service.impl.PrivatBankService;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
+import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -26,7 +30,7 @@ public class MainMenuStateHandler implements BotStateHandler {
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         return switch (update.getCallbackQuery().getData()) {
             case "SETTINGS" -> getSettingsMenu(chatId);
-            case "CURRENT_INFO" -> getInfo(chatId);
+            case "CURRENT_INFO" -> getCurrentInfo(chatId);
             default -> getExceptionReply(chatId);
         };
     }
@@ -125,6 +129,28 @@ public class MainMenuStateHandler implements BotStateHandler {
                                         .callbackData("BACK")
                                         .build())
                 )
+        );
+    }
+
+    /*Отримати інфу дефолтне значення*
+    private BotResponse getCurrentInfo(long chatId){
+        String bankName = "ПриватБанк";
+        String currency = "USD/UAH";
+        double buy = 27.55;
+        double sell = 27.95;
+
+        String text = String.format(
+                "Курс у %s: %s\nПокупка: %.2f\nПродажа: %.2f",
+                bankName, currency, buy, sell
+        );
+        return new BotResponse(
+                SendMessage
+                        .builder()
+                        .chatId(chatId)
+                        .text(text)
+                        .replyMarkup(getMainMenuReplyMarkup())
+                        .build(),
+                this.getHandledState()
         );
     }
 }
