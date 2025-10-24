@@ -1,6 +1,10 @@
 package org.project.ninjas.minyala.currency.bot.bot.service;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.*;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.CURRENCY_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_DECIMAL_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_START;
 
 import java.util.EnumMap;
 import java.util.Map;
