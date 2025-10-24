@@ -76,7 +76,7 @@ public class HandleDecimalInvoker implements BotStateInvoker {
                 return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
 
             case THREE:
-                userSettings.setDecimalPlaces(1);
+                userSettings.setDecimalPlaces(3);
                 settingsService.saveUserSettings(userSettings);
 
                 InlineKeyboardMarkup markup3 = decimalReplyMarkupWithChoose(
