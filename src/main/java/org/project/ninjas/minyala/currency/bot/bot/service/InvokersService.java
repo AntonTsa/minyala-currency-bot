@@ -26,13 +26,12 @@ public class InvokersService {
      */
     public InvokersService(SettingsService settingsService) {
         invokers.put(HANDLE_START, new HandleStartInvoker(settingsService));
-        invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker());
+        invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker(settingsService));
         invokers.put(HANDLE_SETTINGS, new HandleSettingsInvoker(settingsService));
         invokers.put(HANDLE_DECIMAL_CHOICE, new HandleDecimalInvoker(settingsService));
         invokers.put(CURRENCY_CHOICE, new HandleCurrencyChoiceInvoker(settingsService));
         // Add other invokers here
     }
-
     /**
      * The method gets update from user and current state, and send the update to
      * corresponding handler/ After the wor has done, it sends respond back.
