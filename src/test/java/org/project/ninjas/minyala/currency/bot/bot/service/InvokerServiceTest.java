@@ -1,0 +1,4 @@
+package org.project.ninjas.minyala.currency.bot.bot.service;
+
+public class InvokerServiceTest {
+}
