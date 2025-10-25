@@ -15,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 @RequiredArgsConstructor
 public class HandleStartInvoker implements BotStateInvoker {
-    private final SettingsService settingsService;
 
     @Override
     public BotState getInvokedState() {
@@ -24,8 +23,6 @@ public class HandleStartInvoker implements BotStateInvoker {
 
     @Override
     public BotResponse invoke(Update update) {
-        Long userId = update.getMessage().getFrom().getId();
-        settingsService.createUserSettings(userId);
         return new BotResponse(SendMessage.builder()
                 .chatId(update.getMessage().getChatId())
                 .text("Ласкаво просимо! Цей бот допоможе відслідкувати актуальний курс валют")

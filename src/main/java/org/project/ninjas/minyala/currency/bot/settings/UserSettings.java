@@ -15,7 +15,7 @@ public class UserSettings {
     private int decimalPlaces = 2;
     private String bank = PRIVAT.getDisplayName();
     private List<String> currencies = new ArrayList<>(List.of("USD"));
-    private String notifyTime = "09:00";
+    private String notifyTime = "9:00";
 
     /**
      * Constructor to create default settings.

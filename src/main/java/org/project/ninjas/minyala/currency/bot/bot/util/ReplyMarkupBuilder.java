@@ -3,6 +3,7 @@ package org.project.ninjas.minyala.currency.bot.bot.util;
 import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Decimal.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -123,7 +124,7 @@ public class ReplyMarkupBuilder {
     }
 
     /**
-     * Builds the bank menu reply markup With Choose reply markup.
+     * Builds the bank menu reply markup With Choose.
      *
      * @param btn1 first button
      * @param btn2 second button
@@ -144,16 +145,38 @@ public class ReplyMarkupBuilder {
     }
 
     /**
-     * Builds the currency menu reply markup.
+     * Builds the notify menu reply markup With Choose.
      *
-     * @return the currency inline keyboard markup
+     * @param choose - time notify
+     * @return the notify inline keyboard markup
      */
-    public static InlineKeyboardMarkup notifyReplyMarkup() {
-        return new InlineKeyboardMarkup(
-                List.of(
-                        List.of(btn(BACKTEXT, BACK)),
-                        List.of(btn(BACKALLTEXT, BACKALL))
-                ));
+    public static InlineKeyboardMarkup notifyReplyMarkup(int choose) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        for (int hour = 9; hour < 19; hour++) {
+            String time = String.format("%02d:00",hour);
+            if (hour == choose) {
+                if (row.size() < 3) {
+                    row.add(btn(btnWithChoose(time), time));
+                } else {
+                    rows.add(row);
+                    row = new ArrayList<>();
+                    row.add(btn(btnWithChoose(time), time));
+                }
+            } else if (row.size() < 3) {
+                row.add(btn(time, time));
+            } else {
+                rows.add(row);
+                row = new ArrayList<>();
+                row.add(btn(time, time));
+            }
+        }
+        rows.add(row);
+        rows.add(List.of(btn(BACKTEXT, BACK)));
+        rows.add(List.of(btn(BACKALLTEXT, BACKALL)));
+
+        return new InlineKeyboardMarkup(rows);
     }
 
     /**

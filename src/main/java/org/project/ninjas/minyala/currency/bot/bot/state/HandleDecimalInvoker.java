@@ -39,7 +39,7 @@ public class HandleDecimalInvoker implements BotStateInvoker {
 
     @Override
     public BotResponse invoke(Update update) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
+        Long chatId = update.getCallbackQuery().getMessage().getChatId();
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
         String data = update.getCallbackQuery().getData();
         SendMessage msg = new SendMessage();
