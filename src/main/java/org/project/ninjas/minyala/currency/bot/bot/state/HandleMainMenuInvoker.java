@@ -41,6 +41,9 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
     @Override
     public BotResponse invoke(Update update) {
         long chatId = update.getCallbackQuery().getMessage().getChatId();
+        if (settingsService.getUsersSettings(chatId) == null) {
+            settingsService.createUserSettings(chatId);
+        }
         return switch (update.getCallbackQuery().getData()) {
             case "SETTINGS_BTN" -> handleSettingsButton(chatId);
             case "CURRENT_INFO_BTN" -> handleCurrentInfoButton(chatId);

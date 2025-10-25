@@ -48,7 +48,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
     @Override
     public BotResponse invoke(Update update) {
         String chosenButtonData = update.getCallbackQuery().getData();
-        Long chatId = update.getCallbackQuery().getFrom().getId();
+        Long chatId = update.getCallbackQuery().getMessage().getChatId();
 
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
         List<String> currencies = userSettings.getCurrencies();
