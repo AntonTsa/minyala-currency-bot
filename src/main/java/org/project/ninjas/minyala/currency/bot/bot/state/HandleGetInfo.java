@@ -31,21 +31,39 @@ public class HandleGetInfo {
         List<CurrencyRate> rates = aggregatorService.getAllRates();
 
         int digits = userSettings.getDecimalPlaces();
-
         StringBuilder text = new StringBuilder("Курс у " + userSettings.getBank() + ":\n");
 
+        boolean foundCurrency = false;
+
         for (String currency : userSettings.getCurrencies()) {
+            boolean currencyFoundRates = false;
             for (CurrencyRate rate : rates) {
                 if (rate.getCurrency().equals(currency)) {
-                    String buy = rate.getBuy() > 0 ? CurrencyFormatter.format(rate.getBuy(), digits) : "-";
-                    String sell = rate.getSell() > 0 ? CurrencyFormatter.format(rate.getSell(), digits) : "-";
+                    currencyFoundRates = true;
+                    foundCurrency = true;
 
-                    text.append(String.format("%s/UAH - Купівля: %s; Продаж: %s\n",
-                            rate.getCurrency(),
-                            buy,
-                            sell));
+                    String buy, sell;
+                    if(userSettings.getBank().equals("НБУ")){
+                        String officialRate = CurrencyFormatter.format(rate.getBuy(), digits);
+                        text.append(String.format("%s/UAH - Купівля та продаж: %s\n", rate.getCurrency(), officialRate));
+                    } else {
+                        buy = rate.getBuy() > 0 ? CurrencyFormatter.format(rate.getBuy(), digits) : "-";
+                        sell = rate.getSell() > 0 ? CurrencyFormatter.format(rate.getSell(), digits) : "-";
+
+                        text.append(String.format("%s/UAH - Купівля: %s; Продаж: %s\n",
+                                rate.getCurrency(),
+                                buy,
+                                sell));
+                    }
+
                 }
             }
+            if(!currencyFoundRates){
+                text.append(String.format("%s - інформація недоступна\n", currency));
+            }
+        }
+        if(!foundCurrency){
+            return "Обрані валюти не знайдено у вибраному банку.";
         }
 
         return text.toString();
