@@ -3,6 +3,7 @@ package org.project.ninjas.minyala.currency.bot.bot.state;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.CURRENCY_CHOICE;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.btn;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import java.util.List;
@@ -13,7 +14,6 @@ import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 /**
  * Клас обробника стану {@link BotState#CURRENCY_CHOICE}.
@@ -49,12 +49,10 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
     public BotResponse invoke(Update update) {
         String chosenButtonData = update.getCallbackQuery().getData();
         Long chatId = update.getCallbackQuery().getFrom().getId();
-
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
         List<String> currencies = userSettings.getCurrencies();
-
         SendMessage message;
-        BotState nextState = CURRENCY_CHOICE;
+        BotState nextState;
 
         switch (chosenButtonData) {
             case "USD", "EUR", "GBP" -> {
@@ -64,7 +62,6 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
                 }
                 userSettings.setCurrencies(currencies);
                 settingsService.saveUserSettings(userSettings);
-
                 message = buildCurrencyMenu(chatId, currencies,
                         "Оберіть додаткові валюти, які хочете відстежувати:");
                 nextState = CURRENCY_CHOICE;
@@ -138,13 +135,13 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup(
                 List.of(
                         List.of(
-                                InlineKeyboardButton.builder().text(currencyUsd).callbackData("USD").build(),
-                                InlineKeyboardButton.builder().text(currencyEur).callbackData("EUR").build(),
-                                InlineKeyboardButton.builder().text(currencyGbp).callbackData("GBP").build()
+                                btn(currencyUsd,"USD"),
+                                btn(currencyEur,"EUR"),
+                                btn(currencyGbp,"GBP")
                         ),
                         List.of(
-                                InlineKeyboardButton.builder().text("⬅ Назад").callbackData("BACK").build(),
-                                InlineKeyboardButton.builder().text("Головне меню").callbackData("HANDLE_MAIN_MENU").build()
+                                btn("⬅ Назад","BACK"),
+                                btn("Головне меню","HANDLE_MAIN_MENU")
                         )
                 )
         );
