@@ -188,13 +188,6 @@ gradle build
 java -jar build/libs/minyala-currency-bot.jar
 ```
 
-Or using Docker:
-
-```bash
-docker build -t minyala-bot .
-docker run -e BOT_TOKEN=xxx -e BOT_USERNAME=xxx minyala-bot
-```
-
 ---
 
 ## 🧩 Future Enhancements
@@ -206,9 +199,15 @@ docker run -e BOT_TOKEN=xxx -e BOT_USERNAME=xxx minyala-bot
 
 ---
 
-## 🧑‍💻 Authors
+## 👥 Authors
 
-**Project Ninjas** — Educational Java Core project by Ruslan Lomaka and team.
+- [AntonTsa](https://github.com/AntonTsa)
+- [inna-lisa](https://github.com/inna-lisa)
+- [RuslanLomaka](https://github.com/RuslanLomaka)
+- [AnonymousMar](https://github.com/AnonymousMar)
+- [KatyaMakarichak](https://github.com/KatyaMakarichak)
+
+**Project Ninjas** — Educational Java Core project by the team.
 
 ---
 
