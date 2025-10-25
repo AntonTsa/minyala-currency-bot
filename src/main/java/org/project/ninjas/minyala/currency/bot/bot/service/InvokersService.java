@@ -19,7 +19,7 @@ public class InvokersService {
      * @param settingsService - settings service
      */
     public InvokersService(SettingsService settingsService) {
-        invokers.put(HANDLE_START, new HandleStartInvoker(settingsService));
+        invokers.put(HANDLE_START, new HandleStartInvoker());
         invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker(settingsService));
         invokers.put(HANDLE_SETTINGS, new HandleSettingsInvoker(settingsService));
         invokers.put(HANDLE_DECIMAL_CHOICE, new HandleDecimalInvoker(settingsService));
