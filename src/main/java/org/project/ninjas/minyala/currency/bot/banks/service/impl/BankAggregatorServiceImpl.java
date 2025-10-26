@@ -17,16 +17,6 @@ public class BankAggregatorServiceImpl implements BankAggregatorService {
     private final List<BankRateService> bankServices;
 
     /**
-     * Creates a new aggregator with default bank implementations.
-     */
-    public BankAggregatorServiceImpl() {
-        this.bankServices = new ArrayList<>();
-        this.bankServices.add(new MonobankService());
-        this.bankServices.add(new PrivatBankService());
-        this.bankServices.add(new NbuService());
-    }
-
-    /**
      * Creates a new aggregator with custom bank services.
      *
      * @param bankServices list of {@link BankRateService} instances

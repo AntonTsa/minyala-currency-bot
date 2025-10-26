@@ -31,7 +31,7 @@ public class NbuService implements BankRateService {
     @Override
     public List<CurrencyRate> getRates() {
         List<CurrencyRate> rates = new ArrayList<>();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
 
         try (HttpClient client = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
@@ -43,7 +43,7 @@ public class NbuService implements BankRateService {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e.getMessage());
         }
-        if (response == null || response.statusCode() != 200) {
+        if (response.statusCode() != 200) {
             throw new RuntimeException("Failed to fetch NBU API data: " + response.statusCode());
         }
 
