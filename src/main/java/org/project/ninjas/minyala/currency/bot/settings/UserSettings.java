@@ -12,7 +12,7 @@ import org.project.ninjas.minyala.currency.bot.bot.util.Bank;
 public class UserSettings {
     private Long userId;
     private int decimalPlaces = 2;
-    private String bank = String.valueOf(Bank.PRIVAT);
+    private Bank bank = Bank.PRIVAT;
     private List<String> currencies = new ArrayList<>(List.of("USD"));
     private String notifyTime = "9:00";
 

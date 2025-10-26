@@ -32,7 +32,7 @@ public class HandleBankInvoker implements BotStateInvoker {
 
         switch (data) {
             case "PRIVAT":
-                userSettings.setBank(String.valueOf(Bank.PRIVAT));
+                userSettings.setBank(Bank.PRIVAT);
                 settingsService.saveUserSettings(userSettings);
 
                 msg = SendMessage.builder()
@@ -44,7 +44,7 @@ public class HandleBankInvoker implements BotStateInvoker {
                 return new BotResponse(msg, BANK_CHOICE);
 
             case "MONO":
-                userSettings.setBank(String.valueOf(Bank.MONO));
+                userSettings.setBank(Bank.MONO);
                 settingsService.saveUserSettings(userSettings);
 
                 msg = SendMessage.builder()
@@ -56,7 +56,7 @@ public class HandleBankInvoker implements BotStateInvoker {
                 return new BotResponse(msg, BANK_CHOICE);
 
             case "NBU":
-                userSettings.setBank(String.valueOf(Bank.NBU));
+                userSettings.setBank(Bank.NBU);
                 settingsService.saveUserSettings(userSettings);
 
                 msg = SendMessage.builder()
