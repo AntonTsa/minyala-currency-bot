@@ -29,11 +29,13 @@ public class SettingsService {
         settings.put(userSettings.getUserId(), userSettings);
     }
 
-    public UserSettings getUsersSettings(Long userId){
+    /**
+     * Get user's settings by his chatId.
+     *
+     * @param userId - user's chat id
+     * @return correspondent user's settings
+     */
+    public UserSettings getUsersSettings(Long userId) {
         return settings.get(userId);
-    }
-
-    public ConcurrentHashMap<Long, UserSettings> getAllUserSettings(Long userId){
-        return settings;
     }
 }

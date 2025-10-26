@@ -1,8 +1,12 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.NOTIFY_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.PRIVAT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACK;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACKALL;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.notifyReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
@@ -11,7 +15,9 @@ import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-/***/
+/**
+ * Invoker to handle notification time choice.
+ */
 @RequiredArgsConstructor
 public class HandleNotifyInvoker implements BotStateInvoker {
 
@@ -30,7 +36,16 @@ public class HandleNotifyInvoker implements BotStateInvoker {
         SendMessage msg = new SendMessage();
 
         switch (data) {
-            case "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" -> {
+            case "09:00",
+                    "10:00",
+                    "11:00",
+                    "12:00",
+                    "13:00",
+                    "14:00",
+                    "15:00",
+                    "16:00",
+                    "17:00",
+                    "18:00" -> {
 
                 userSettings.setNotifyTime(data);
                 settingsService.saveUserSettings(userSettings);

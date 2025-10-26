@@ -37,7 +37,8 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
     /**
      * Основний метод обробки callback-оновлень, отриманих від користувача.
      * <ul>
-     *   <li>При натисканні на одну з валют ("USD", "EUR", "GBP") — змінює стан вибору цієї валюти.</li>
+     *   <li>При натисканні на одну з валют ("USD", "EUR", "GBP") —
+     *   змінює стан вибору цієї валюти.</li>
      *   <li>При натисканні кнопки "Назад" — повертає користувача до меню налаштувань.</li>
      *   <li>При будь-яких інших даних — просто оновлює меню валют.</li>
      * </ul>
@@ -67,7 +68,6 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
 
                 message = buildCurrencyMenu(chatId, currencies,
                         "Оберіть додаткові валюти, які хочете відстежувати:");
-                nextState = CURRENCY_CHOICE;
             }
 
             case "BACK" -> {
@@ -90,12 +90,9 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
                 nextState = HANDLE_MAIN_MENU;
             }
 
-            default -> {
-                // Будь-яке інше значення callback — просто оновлюємо меню
-                message = buildCurrencyMenu(chatId, currencies,
-                        "Оберіть валюти, які хочете відстежувати:");
-                nextState = CURRENCY_CHOICE;
-            }
+            default -> // Будь-яке інше значення callback — просто оновлюємо меню
+                    message = buildCurrencyMenu(chatId, currencies,
+                            "Оберіть валюти, які хочете відстежувати:");
         }
 
         return new BotResponse(message, nextState);
@@ -138,13 +135,28 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup(
                 List.of(
                         List.of(
-                                InlineKeyboardButton.builder().text(currencyUsd).callbackData("USD").build(),
-                                InlineKeyboardButton.builder().text(currencyEur).callbackData("EUR").build(),
-                                InlineKeyboardButton.builder().text(currencyGbp).callbackData("GBP").build()
+                                InlineKeyboardButton.builder()
+                                        .text(currencyUsd)
+                                        .callbackData("USD")
+                                        .build(),
+                                InlineKeyboardButton.builder()
+                                        .text(currencyEur)
+                                        .callbackData("EUR")
+                                        .build(),
+                                InlineKeyboardButton.builder()
+                                        .text(currencyGbp)
+                                        .callbackData("GBP")
+                                        .build()
                         ),
                         List.of(
-                                InlineKeyboardButton.builder().text("⬅ Назад").callbackData("BACK").build(),
-                                InlineKeyboardButton.builder().text("Головне меню").callbackData("HANDLE_MAIN_MENU").build()
+                                InlineKeyboardButton.builder()
+                                        .text("⬅ Назад")
+                                        .callbackData("BACK")
+                                        .build(),
+                                InlineKeyboardButton.builder()
+                                        .text("Головне меню")
+                                        .callbackData("HANDLE_MAIN_MENU")
+                                        .build()
                         )
                 )
         );

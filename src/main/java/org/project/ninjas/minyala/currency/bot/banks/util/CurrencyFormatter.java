@@ -17,6 +17,7 @@ public final class CurrencyFormatter {
      * @return formatted string representation
      */
     public static String format(double value, int digits) {
+        //noinspection MalformedFormatString
         return String.format("%." + digits + "f", value);
     }
 }

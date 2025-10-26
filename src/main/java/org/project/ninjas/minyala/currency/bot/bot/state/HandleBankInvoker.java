@@ -1,8 +1,13 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.BANK_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.MONO;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.NBU;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.PRIVAT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkupWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.btnWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
@@ -38,7 +43,9 @@ public class HandleBankInvoker implements BotStateInvoker {
                 settingsService.saveUserSettings(userSettings);
 
                 InlineKeyboardMarkup markup1 = bankReplyMarkupWithChoose(
-                        btnWithChoose(PRIVAT.getDisplayName()), MONO.getDisplayName(), NBU.getDisplayName());
+                        btnWithChoose(PRIVAT.getDisplayName()),
+                        MONO.getDisplayName(),
+                        NBU.getDisplayName());
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
@@ -53,7 +60,9 @@ public class HandleBankInvoker implements BotStateInvoker {
                 settingsService.saveUserSettings(userSettings);
 
                 InlineKeyboardMarkup markup2 = bankReplyMarkupWithChoose(
-                        PRIVAT.getDisplayName(), btnWithChoose(MONO.getDisplayName()), NBU.getDisplayName());
+                        PRIVAT.getDisplayName(),
+                        btnWithChoose(MONO.getDisplayName()),
+                        NBU.getDisplayName());
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
@@ -68,7 +77,9 @@ public class HandleBankInvoker implements BotStateInvoker {
                 settingsService.saveUserSettings(userSettings);
 
                 InlineKeyboardMarkup markup3 = bankReplyMarkupWithChoose(
-                        PRIVAT.getDisplayName(), MONO.getDisplayName(), btnWithChoose(NBU.getDisplayName()));
+                        PRIVAT.getDisplayName(),
+                        MONO.getDisplayName(),
+                        btnWithChoose(NBU.getDisplayName()));
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
