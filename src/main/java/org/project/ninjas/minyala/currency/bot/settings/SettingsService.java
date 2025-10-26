@@ -38,14 +38,4 @@ public class SettingsService {
     public UserSettings getUsersSettings(Long userId) {
         return settings.get(userId);
     }
-
-    /**
-     * Get all default user's settings by his chatId.
-     *
-     * @param userId - user's chat id
-     * @return settings
-     */
-    public ConcurrentHashMap<Long, UserSettings> getAllUserSettings(Long userId) {
-        return settings;
-    }
 }
