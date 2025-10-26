@@ -61,6 +61,8 @@ public final class AppLauncher {
                             )
                     )
             );
+            // NotificationScheduler scheduler = new NotificationScheduler(bot);
+            // scheduler.start();
         } catch (TelegramApiException e) {
             LOGGER.error(e.getMessage());
         }
@@ -69,43 +71,3 @@ public final class AppLauncher {
     }
 
 }
-
-
-public final class AppLauncher {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppLauncher.class);
-
-    private AppLauncher() {}
-
-    public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.load();
-        String botToken = dotenv.get("BOT_TOKEN");
-        String botUsername = dotenv.get("BOT_USERNAME");
-
-        if (botToken == null || botUsername == null) {
-            LOGGER.error("BOT_TOKEN or BOT_USERNAME missing in .env");
-            return;
-        }
-
-        try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-
-            ConcurrentHashMap<Long, UserSettings> usersMap = new ConcurrentHashMap<>();
-            BotController controller = new BotController(usersMap);
-
-            CurrencyBot bot = new CurrencyBot(botToken, botUsername, controller);
-            botsApi.registerBot(bot);
-
-            NotificationScheduler scheduler = new NotificationScheduler(bot);
-            scheduler.start();
-
-        } catch (TelegramApiException e) {
-            LOGGER.error("Помилка при запуску бота: " + e.getMessage(), e);
-        }
-
-        LOGGER.info("Bot successfully loaded");
-    }
-}
-
-}
-
