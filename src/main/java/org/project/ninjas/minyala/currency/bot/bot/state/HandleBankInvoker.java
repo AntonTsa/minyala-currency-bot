@@ -1,8 +1,13 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.BANK_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.MONO;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.NBU;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.PRIVAT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkupWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.btnWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;

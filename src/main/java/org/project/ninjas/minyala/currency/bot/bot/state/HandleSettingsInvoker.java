@@ -1,6 +1,10 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.decimalReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.notifyReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;

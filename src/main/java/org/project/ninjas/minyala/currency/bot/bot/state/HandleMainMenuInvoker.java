@@ -1,29 +1,16 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static java.awt.SystemColor.text;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
 
 import lombok.RequiredArgsConstructor;
-import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
-import org.project.ninjas.minyala.currency.bot.banks.service.BankAggregatorService;
-import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.BankAggregatorServiceImpl;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.MonobankService;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.NbuService;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.PrivatBankService;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Handler for Main Menu buttons.
@@ -44,7 +31,6 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
         return switch (update.getCallbackQuery().getData()) {
             case "SETTINGS_BTN" -> handleSettingsButton(chatId);
             case "CURRENT_INFO_BTN" -> handleCurrentInfoButton(chatId);
-
             default -> handleExceptionalCases(chatId);
         };
     }
@@ -72,7 +58,7 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
      * @param chatId user's chat id
      * @return correspondent bot response
      */
-    private BotResponse  handleCurrentInfoButton(long chatId) {
+    private BotResponse handleCurrentInfoButton(long chatId) {
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
 
         if (userSettings == null) {

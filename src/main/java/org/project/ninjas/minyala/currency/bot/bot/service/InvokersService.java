@@ -1,10 +1,24 @@
 package org.project.ninjas.minyala.currency.bot.bot.service;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.*;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.BANK_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.CURRENCY_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_DECIMAL_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_START;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.NOTIFY_CHOICE;
 
 import java.util.EnumMap;
 import java.util.Map;
-import org.project.ninjas.minyala.currency.bot.bot.state.*;
+import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
+import org.project.ninjas.minyala.currency.bot.bot.state.BotStateInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleBankInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleCurrencyChoiceInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleDecimalInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleMainMenuInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleNotifyInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleSettingsInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleStartInvoker;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 
 /**

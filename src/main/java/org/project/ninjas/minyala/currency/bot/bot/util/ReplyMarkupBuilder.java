@@ -1,7 +1,11 @@
 package org.project.ninjas.minyala.currency.bot.bot.util;
 
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Decimal.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.MONO;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.NBU;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.PRIVAT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Decimal.ONE;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Decimal.THREE;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Decimal.TWO;
 
 import java.util.ArrayList;
 import java.util.List;
