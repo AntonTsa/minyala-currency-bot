@@ -66,8 +66,6 @@ public final class AppLauncher {
         } catch (TelegramApiException e) {
             LOGGER.error(e.getMessage());
         }
-
         LOGGER.info("Bot successfully loaded");
     }
-
 }
