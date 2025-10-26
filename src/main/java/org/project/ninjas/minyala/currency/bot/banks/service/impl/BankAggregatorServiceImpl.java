@@ -1,9 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.banks.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankAggregatorService;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
@@ -49,17 +47,5 @@ public class BankAggregatorServiceImpl implements BankAggregatorService {
             }
         }
         return combined;
-    }
-
-    @Override
-    public List<CurrencyRate> getRatesByCurrency(String currency) {
-        if (currency == null || currency.isBlank()) {
-            return Collections.emptyList();
-        }
-
-        String normalized = currency.trim().toUpperCase();
-        return getAllRates().stream()
-                .filter(rate -> normalized.equalsIgnoreCase(rate.getCurrency()))
-                .collect(Collectors.toList());
     }
 }

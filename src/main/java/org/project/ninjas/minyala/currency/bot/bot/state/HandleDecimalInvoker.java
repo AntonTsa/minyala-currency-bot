@@ -1,7 +1,14 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_DECIMAL_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACK;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACKALL;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.EXEPTIONTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.MAINMENUTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.SETTINGSTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.decimalReplyMarkupWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;

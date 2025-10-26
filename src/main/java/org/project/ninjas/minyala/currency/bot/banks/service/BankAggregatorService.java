@@ -15,12 +15,4 @@ public interface BankAggregatorService {
      * @return list of {@link CurrencyRate} from all banks
      */
     List<CurrencyRate> getAllRates();
-
-    /**
-     * Retrieves rates filtered by currency code.
-     *
-     * @param currency the currency code (e.g., "USD", "EUR")
-     * @return list of matching {@link CurrencyRate}
-     */
-    List<CurrencyRate> getRatesByCurrency(String currency);
 }

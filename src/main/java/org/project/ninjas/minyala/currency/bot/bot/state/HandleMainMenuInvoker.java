@@ -2,7 +2,10 @@ package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.EXEPTIONTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.SETTINGSTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
@@ -33,7 +36,6 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
         return switch (update.getCallbackQuery().getData()) {
             case "SETTINGS_BTN" -> handleSettingsButton(chatId);
             case "CURRENT_INFO_BTN" -> handleCurrentInfoButton(chatId);
-
             default -> handleExceptionalCases(chatId);
         };
     }
