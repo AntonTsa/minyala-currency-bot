@@ -1,7 +1,6 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.NOTIFY_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,7 @@ public class HandleNotifyInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(PRIVAT.getDisplayName())
+                        .text("Час:")
                         .replyMarkup(notifyReplyMarkup(Integer.parseInt(data.split(":")[0])))
                         .build();
                 return new BotResponse(msg, NOTIFY_CHOICE);
@@ -46,7 +45,7 @@ public class HandleNotifyInvoker implements BotStateInvoker {
             case BACK -> {
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text("Налаштування")
+                        .text(BACKALL)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_SETTINGS);
@@ -55,7 +54,7 @@ public class HandleNotifyInvoker implements BotStateInvoker {
             case BACKALL -> {
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text("Головне меню")
+                        .text(BACKALLTEXT)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_MAIN_MENU);
@@ -64,7 +63,7 @@ public class HandleNotifyInvoker implements BotStateInvoker {
             default -> {
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text("Немає такої команди")
+                        .text(EXEPTIONTEXT)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, this.getInvokedState());

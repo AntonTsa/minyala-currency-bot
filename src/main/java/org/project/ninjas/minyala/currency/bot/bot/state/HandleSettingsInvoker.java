@@ -4,6 +4,7 @@ import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilde
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
+import org.project.ninjas.minyala.currency.bot.bot.util.Bank;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -44,7 +45,14 @@ public class HandleSettingsInvoker implements BotStateInvoker {
                 SendMessage.builder()
                         .chatId(chatId)
                         .text("Оберіть кількість знаків після коми")
-                        .replyMarkup(decimalReplyMarkup())
+                        .replyMarkup(
+                                decimalReplyMarkupWithChoose(String
+                                        .valueOf(settingsService
+                                        .getUsersSettings(chatId)
+                                        .getDecimalPlaces()
+                                        )
+                                )
+                        )
                         .build(),
                 BotState.HANDLE_DECIMAL_CHOICE
         );
@@ -61,7 +69,13 @@ public class HandleSettingsInvoker implements BotStateInvoker {
                 SendMessage.builder()
                         .chatId(chatId)
                         .text("Оберіть банк")
-                        .replyMarkup(bankReplyMarkup())
+                        .replyMarkup(bankReplyMarkupWithChoose(Bank
+                                        .valueOf(settingsService
+                                                .getUsersSettings(chatId)
+                                                .getBank()
+                                        )
+                                )
+                        )
                         .build(),
                 BotState.BANK_CHOICE
         );
@@ -112,7 +126,7 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         return new BotResponse(
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text("Головне меню")
+                        .text(MAINMENUTEXT)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build(),
                 BotState.HANDLE_MAIN_MENU
@@ -129,7 +143,7 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         return new BotResponse(
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text("Немає такої команди")
+                        .text(EXEPTIONTEXT)
                         .replyMarkup(settingsReplyMarkup())
                         .build(),
                 this.getInvokedState()

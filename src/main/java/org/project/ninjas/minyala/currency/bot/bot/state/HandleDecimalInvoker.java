@@ -5,12 +5,10 @@ import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilde
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
-import org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 /**
  *  Decimal menu button handler.
@@ -49,13 +47,10 @@ public class HandleDecimalInvoker implements BotStateInvoker {
                 userSettings.setDecimalPlaces(1);
                 settingsService.saveUserSettings(userSettings);
 
-                InlineKeyboardMarkup markup1 = decimalReplyMarkupWithChoose(
-                        btnWithChoose(ONE), TWO, THREE);
-
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
                         .text(ONE)
-                        .replyMarkup(markup1)
+                        .replyMarkup(decimalReplyMarkupWithChoose(ONE))
                         .build();
 
                 return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
@@ -64,13 +59,10 @@ public class HandleDecimalInvoker implements BotStateInvoker {
                 userSettings.setDecimalPlaces(2);
                 settingsService.saveUserSettings(userSettings);
 
-                InlineKeyboardMarkup markup2 = decimalReplyMarkupWithChoose(
-                        ONE, btnWithChoose(TWO), THREE);
-
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
                         .text(TWO)
-                        .replyMarkup(markup2)
+                        .replyMarkup(decimalReplyMarkupWithChoose(TWO))
                         .build();
 
                 return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
@@ -79,29 +71,26 @@ public class HandleDecimalInvoker implements BotStateInvoker {
                 userSettings.setDecimalPlaces(3);
                 settingsService.saveUserSettings(userSettings);
 
-                InlineKeyboardMarkup markup3 = decimalReplyMarkupWithChoose(
-                        ONE, TWO, btnWithChoose(THREE));
-
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
                         .text(THREE)
-                        .replyMarkup(markup3)
+                        .replyMarkup(decimalReplyMarkupWithChoose(THREE))
                         .build();
 
                 return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
 
-            case ReplyMarkupBuilder.BACK:
+            case BACK:
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text("Налаштування")
+                        .text(SETTINGSTEXT)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_SETTINGS);
 
-            case ReplyMarkupBuilder.BACKALL:
+            case BACKALL:
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text("Головне меню")
+                        .text(MAINMENUTEXT)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_MAIN_MENU);
@@ -109,7 +98,7 @@ public class HandleDecimalInvoker implements BotStateInvoker {
             default:
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text("Немає такої команди")
+                        .text(EXEPTIONTEXT)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, this.getInvokedState());
