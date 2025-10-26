@@ -20,7 +20,7 @@ public class HandleGetInfo {
     public static String getCurrencyInfo(UserSettings userSettings) {
         List<BankRateService> selectedBanks = new ArrayList<>();
 
-        switch (userSettings.getBank()) {
+        switch (userSettings.getBank().getDisplayName()) {
             case "Приватбанк" -> selectedBanks.add(new PrivatBankService());
             case "Монобанк" -> selectedBanks.add(new MonobankService());
             case "НБУ" -> selectedBanks.add(new NbuService());
