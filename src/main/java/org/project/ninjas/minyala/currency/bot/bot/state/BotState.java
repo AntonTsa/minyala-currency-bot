@@ -1,35 +1,37 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 /**
- * Stages of working with bot
+ * Stages of working with bot.
  */
 public enum BotState {
     /**
-     * Initial stage, user press button "/start"
+     * Initial stage, user press button "/start".
      */
-    START,
+    HANDLE_START,
     /**
-     * Main Menu handling stage
+     * Main Menu handling stage.
      */
-    MAIN_MENU,
+    HANDLE_MAIN_MENU,
     /**
-     * Settings menu handling stage
+     * Settings menu handling stage.
      */
-    SETTINGS,
+    HANDLE_SETTINGS,
     /**
-     * Decimal options handling stage
+     * Decimal options handling stage.
      */
-    DECIMAL_CHOICE,
+    HANDLE_DECIMAL_CHOICE,
     /**
-     * Bank options handling stage
+     * Bank options handling stage.
      */
     BANK_CHOICE,
     /**
-     * Currency options handling stage
+     * Currency options handling stage.
      */
     CURRENCY_CHOICE,
     /**
-     * Notify time options handling stage
+     * Notify time options handling stage.
      */
-    NOTIFY_CHOICE
+    NOTIFY_CHOICE,
+    /***/
+    GET_INFO
 }

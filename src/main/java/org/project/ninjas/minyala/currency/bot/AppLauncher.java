@@ -1,12 +1,10 @@
 package org.project.ninjas.minyala.currency.bot;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import java.util.List;
 import org.project.ninjas.minyala.currency.bot.bot.BotController;
 import org.project.ninjas.minyala.currency.bot.bot.CurrencyBot;
-import org.project.ninjas.minyala.currency.bot.bot.state.BotStateContext;
-import org.project.ninjas.minyala.currency.bot.bot.state.StartStateHandler;
-import org.project.ninjas.minyala.currency.bot.bot.state.UserStateService;
+import org.project.ninjas.minyala.currency.bot.bot.service.InvokersService;
+import org.project.ninjas.minyala.currency.bot.bot.service.UserStateService;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +12,9 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+/**
+ * Main class of the application. Setups and launches it.
+ */
 public final class AppLauncher {
 
     /**
@@ -28,6 +29,7 @@ public final class AppLauncher {
 
     /**
      * Main method that launches app.
+     *
      * @param args - args
      */
     public static void main(final String[] args) {
@@ -41,6 +43,8 @@ public final class AppLauncher {
             return;
         }
 
+        SettingsService settingsService = new SettingsService();
+
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(
                     DefaultBotSession.class
@@ -51,12 +55,8 @@ public final class AppLauncher {
                             botUsername,
                             new BotController(
                                     new UserStateService(),
-                                    new BotStateContext(
-                                            List.of(
-                                                    new StartStateHandler(
-                                                            new SettingsService()
-                                                    )
-                                            )
+                                    new InvokersService(
+                                            settingsService
                                     )
                             )
                     )
@@ -67,6 +67,7 @@ public final class AppLauncher {
 
         LOGGER.info("Bot successfully loaded");
     }
+
 }
 
 
@@ -105,3 +106,6 @@ public final class AppLauncher {
         LOGGER.info("Bot successfully loaded");
     }
 }
+
+}
+

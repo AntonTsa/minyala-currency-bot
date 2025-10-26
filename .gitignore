@@ -38,3 +38,4 @@ build
 
 # Ignore .env
 .env
+.DS_Store

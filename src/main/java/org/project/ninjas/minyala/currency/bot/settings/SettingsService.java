@@ -1,21 +1,52 @@
 package org.project.ninjas.minyala.currency.bot.settings;
 
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.RequiredArgsConstructor;
 
+/**
+ * Service to store and manage settings of each user.
+ */
+@RequiredArgsConstructor
 public class SettingsService {
     private final ConcurrentHashMap<Long, UserSettings> settings = new ConcurrentHashMap<>();
 
-    public UserSettings getUserSetting(Long chatId) {
-        return settings.get(chatId);
-    }
-
+    /**
+     * Save custom user's settings.
+     *
+     * @param userSettings - custom settings
+     */
     public void saveUserSettings(UserSettings userSettings) {
-        settings.put(userSettings.getChatId(), userSettings);
+        settings.put(userSettings.getUserId(), userSettings);
     }
 
-    public void createUserSettings(Long chatId) {
-        UserSettings userSettings = new UserSettings(chatId);
-        settings.put(userSettings.getChatId(), userSettings);
+    /**
+     * Save default user's settings by his chatId.
+     *
+     * @param userId - user's chat id
+     */
+    public void createUserSettings(Long userId) {
+        UserSettings userSettings = new UserSettings(userId);
+        settings.put(userSettings.getUserId(), userSettings);
+    }
+
+    /**
+     * Get default user's settings by his chatId.
+     *
+     * @param userId - user's chat id
+     * @return settings
+     */
+    public UserSettings getUsersSettings(Long userId) {
+        return settings.get(userId);
+    }
+
+    /**
+     * Get all default user's settings by his chatId.
+     *
+     * @param userId - user's chat id
+     * @return settings
+     */
+    public ConcurrentHashMap<Long, UserSettings> getAllUserSettings(Long userId) {
+        return settings;
     }
 }
 

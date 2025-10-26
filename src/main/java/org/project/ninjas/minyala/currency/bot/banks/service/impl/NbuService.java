@@ -63,8 +63,8 @@ public class NbuService implements BankRateService {
                 rates.add(new CurrencyRate(
                         getBankName(),
                         code,
-                        0.0,
-                        0.0,
+                       rate,
+                        rate,
                         rate,
                         LocalDate.parse(LocalDate.now().toString()) // today’s date
                 ));
