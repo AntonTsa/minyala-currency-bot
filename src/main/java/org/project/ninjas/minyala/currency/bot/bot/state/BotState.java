@@ -31,7 +31,5 @@ public enum BotState {
     /**
      * Notify time options handling stage.
      */
-    NOTIFY_CHOICE,
-    /***/
-    GET_INFO
+    NOTIFY_CHOICE
 }

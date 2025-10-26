@@ -6,7 +6,6 @@ import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilde
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
-import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

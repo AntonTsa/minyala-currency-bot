@@ -61,10 +61,11 @@ public final class AppLauncher {
                             )
                     )
             );
+            // NotificationScheduler scheduler = new NotificationScheduler(bot);
+            // scheduler.start();
         } catch (TelegramApiException e) {
             LOGGER.error(e.getMessage());
         }
-
         LOGGER.info("Bot successfully loaded");
     }
 }
