@@ -1,6 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_DECIMAL_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.BANK_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
 
 import lombok.RequiredArgsConstructor;
@@ -12,29 +13,16 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-/**
- *  Decimal menu button handler.
- */
+
+/***/
 @RequiredArgsConstructor
-public class HandleDecimalInvoker implements BotStateInvoker {
-    /**
-     *  Button 1.
-     */
-    public static final String ONE = "1";
-    /**
-     *  Button 2.
-     */
-    public static final String TWO = "2";
-    /**
-     *  Button 3.
-     */
-    public static final String THREE = "3";
+public class HandleBankInvoker implements BotStateInvoker {
 
     private final SettingsService settingsService;
 
     @Override
     public BotState getInvokedState() {
-        return HANDLE_DECIMAL_CHOICE;
+        return BotState.BANK_CHOICE;
     }
 
     @Override
@@ -45,50 +33,50 @@ public class HandleDecimalInvoker implements BotStateInvoker {
         SendMessage msg = new SendMessage();
 
         switch (data) {
-            case ONE:
-                userSettings.setDecimalPlaces(1);
+            case "ПриватБанк":
+                userSettings.setBank(PRIVAT.getDisplayName());
                 settingsService.saveUserSettings(userSettings);
 
-                InlineKeyboardMarkup markup1 = decimalReplyMarkupWithChoose(
-                        btnWithChoose(ONE), TWO, THREE);
+                InlineKeyboardMarkup markup1 = bankReplyMarkupWithChoose(
+                        btnWithChoose(PRIVAT.getDisplayName()), MONO.getDisplayName(), NBU.getDisplayName());
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(ONE)
+                        .text(PRIVAT.getDisplayName())
                         .replyMarkup(markup1)
                         .build();
 
-                return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
+                return new BotResponse(msg, BANK_CHOICE);
 
-            case TWO:
-                userSettings.setDecimalPlaces(2);
+            case "МоноБанк":
+                userSettings.setBank(MONO.getDisplayName());
                 settingsService.saveUserSettings(userSettings);
 
-                InlineKeyboardMarkup markup2 = decimalReplyMarkupWithChoose(
-                        ONE, btnWithChoose(TWO), THREE);
+                InlineKeyboardMarkup markup2 = bankReplyMarkupWithChoose(
+                        PRIVAT.getDisplayName(), btnWithChoose(MONO.getDisplayName()), NBU.getDisplayName());
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(TWO)
+                        .text(MONO.getDisplayName())
                         .replyMarkup(markup2)
                         .build();
 
-                return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
+                return new BotResponse(msg, BANK_CHOICE);
 
-            case THREE:
-                userSettings.setDecimalPlaces(3);
+            case "НБУ":
+                userSettings.setBank(NBU.getDisplayName());
                 settingsService.saveUserSettings(userSettings);
 
-                InlineKeyboardMarkup markup3 = decimalReplyMarkupWithChoose(
-                        ONE, TWO, btnWithChoose(THREE));
+                InlineKeyboardMarkup markup3 = bankReplyMarkupWithChoose(
+                        PRIVAT.getDisplayName(), MONO.getDisplayName(), btnWithChoose(NBU.getDisplayName()));
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(THREE)
+                        .text(NBU.getDisplayName())
                         .replyMarkup(markup3)
                         .build();
 
-                return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
+                return new BotResponse(msg, BANK_CHOICE);
 
             case ReplyMarkupBuilder.BACK:
                 msg = SendMessage.builder()

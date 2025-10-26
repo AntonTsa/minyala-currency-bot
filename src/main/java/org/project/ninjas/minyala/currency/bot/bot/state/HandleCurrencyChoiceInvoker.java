@@ -1,6 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.CURRENCY_CHOICE;
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
@@ -79,6 +80,16 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
                 nextState = HANDLE_SETTINGS;
             }
 
+            case "HANDLE_MAIN_MENU" -> {
+                // Повернення до main menu
+                message = SendMessage.builder()
+                        .chatId(chatId)
+                        .text("Головне меню")
+                        .replyMarkup(settingsReplyMarkup())
+                        .build();
+                nextState = HANDLE_MAIN_MENU;
+            }
+
             default -> {
                 // Будь-яке інше значення callback — просто оновлюємо меню
                 message = buildCurrencyMenu(chatId, currencies,
@@ -132,10 +143,8 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
                                 InlineKeyboardButton.builder().text(currencyGbp).callbackData("GBP").build()
                         ),
                         List.of(
-                                InlineKeyboardButton.builder()
-                                        .text("⬅ Назад")
-                                        .callbackData("BACK")
-                                        .build()
+                                InlineKeyboardButton.builder().text("⬅ Назад").callbackData("BACK").build(),
+                                InlineKeyboardButton.builder().text("Головне меню").callbackData("HANDLE_MAIN_MENU").build()
                         )
                 )
         );

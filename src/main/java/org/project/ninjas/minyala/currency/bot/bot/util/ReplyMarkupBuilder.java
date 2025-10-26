@@ -1,25 +1,32 @@
 package org.project.ninjas.minyala.currency.bot.bot.util;
 
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Decimal.*;
+
+import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 /**
  * Utility class for building keyboard layouts.
  */
-@RequiredArgsConstructor
 public class ReplyMarkupBuilder {
-   private final SettingsService set;
     /**
      *  Button BACK.
      */
     public static final String BACK = "BACK";
+
+    /***/
+    public static final String BACKTEXT = "НАЗАД";
+
     /**
      *  Button BACK to main menu.
      */
     public static final String BACKALL = "BACKALL";
+
+    /***/
+    public static final String BACKALLTEXT = "ГОЛОВНЕ МЕНЮ";
 
     private ReplyMarkupBuilder() {
         throw new UnsupportedOperationException("Utility class");
@@ -58,7 +65,7 @@ public class ReplyMarkupBuilder {
                         List.of(btn("Банк", "BANK_CHOICE")),
                         List.of(btn("Валюти", "CURRENCY_CHOICE")),
                         List.of(btn("Час оповіщення", "NOTIFY_CHOICE")),
-                        List.of(btn("Назад", BACK))
+                        List.of(btn(BACKTEXT, BACK))
                 )
         );
     }
@@ -71,11 +78,11 @@ public class ReplyMarkupBuilder {
     public static InlineKeyboardMarkup decimalReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(btn("  1", "1"),
-                                btn("✅2", "2"),
-                                btn("  3", "3")),
-                        List.of(btn("НАЗАД", BACK)),
-                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
+                        List.of(btn(ONE.getDisplayName(), ONE.getDisplayName()),
+                                btn(btnWithChoose(TWO.getDisplayName()), TWO.getDisplayName()),
+                                btn(THREE.getDisplayName(), THREE.getDisplayName())),
+                        List.of(btn(BACKTEXT, BACK)),
+                        List.of(btn(BACKALLTEXT, BACKALL))
                 ));
     }
 
@@ -93,11 +100,11 @@ public class ReplyMarkupBuilder {
             String btn3) {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(btn(btn1, "1"),
-                                btn(btn2, "2"),
-                                btn(btn3, "3")),
-                        List.of(btn("НАЗАД", BACK)),
-                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
+                        List.of(btn(btn1, ONE.getDisplayName()),
+                                btn(btn2, TWO.getDisplayName()),
+                                btn(btn3, THREE.getDisplayName())),
+                        List.of(btn(BACKTEXT, BACK)),
+                        List.of(btn(BACKALLTEXT, BACKALL))
                 ));
     }
 
@@ -108,23 +115,68 @@ public class ReplyMarkupBuilder {
      */
     public static InlineKeyboardMarkup bankReplyMarkup() {
         return new InlineKeyboardMarkup(
-                List.of(
-                        List.of(btn("НАЗАД", BACK)),
-                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
+                List.of(List.of(btn(btnWithChoose(PRIVAT.getDisplayName()), PRIVAT.getDisplayName())),
+                        List.of(btn(MONO.getDisplayName(), MONO.getDisplayName())),
+                        List.of(btn(NBU.getDisplayName(), NBU.getDisplayName())),
+                        List.of(btn(BACKTEXT, BACK)),
+                        List.of(btn(BACKALLTEXT, BACKALL))
                 ));
     }
 
     /**
-     * Builds the currency menu reply markup.
+     * Builds the bank menu reply markup With Choose.
      *
-     * @return the currency inline keyboard markup
+     * @param btn1 first button
+     * @param btn2 second button
+     * @param btn3 third button
+     * @return the bank inline keyboard markup
      */
-    public static InlineKeyboardMarkup notifyReplyMarkup() {
+    public static InlineKeyboardMarkup bankReplyMarkupWithChoose(
+            String btn1,
+            String btn2,
+            String btn3) {
         return new InlineKeyboardMarkup(
-                List.of(
-                        List.of(btn("НАЗАД", BACK)),
-                        List.of(btn("ГОЛОВНЕ МЕНЮ", BACKALL))
+                List.of(List.of(btn(btn1, PRIVAT.getDisplayName())),
+                        List.of(btn(btn2, MONO.getDisplayName())),
+                        List.of(btn(btn3, NBU.getDisplayName())),
+                        List.of(btn(BACKTEXT, BACK)),
+                        List.of(btn(BACKALLTEXT, BACKALL))
                 ));
+    }
+
+    /**
+     * Builds the notify menu reply markup With Choose.
+     *
+     * @param choose - time notify
+     * @return the notify inline keyboard markup
+     */
+    public static InlineKeyboardMarkup notifyReplyMarkup(int choose) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        for (int hour = 9; hour < 19; hour++) {
+            String time = String.format("%02d:00",hour);
+            if (hour == choose) {
+                if (row.size() < 3) {
+                    row.add(btn(btnWithChoose(time), time));
+                } else {
+                    rows.add(row);
+                    row = new ArrayList<>();
+                    row.add(btn(btnWithChoose(time), time));
+                }
+            } else if (row.size() < 3) {
+                row.add(btn(time, time));
+            } else {
+                rows.add(row);
+                row = new ArrayList<>();
+                row.add(btn(time, time));
+            }
+        }
+        rows.add(row);
+        rows.add(List.of(btn(BACKTEXT, BACK)));
+        rows.add(List.of(btn(BACKALLTEXT, BACKALL)));
+
+        return new InlineKeyboardMarkup(rows);
     }
 
     /**

@@ -1,10 +1,6 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkup;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.decimalReplyMarkup;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.notifyReplyMarkup;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
@@ -94,7 +90,13 @@ public class HandleSettingsInvoker implements BotStateInvoker {
                 SendMessage.builder()
                         .chatId(chatId)
                         .text("Оберіть час сповіщень")
-                        .replyMarkup(notifyReplyMarkup())
+                        .replyMarkup(notifyReplyMarkup(Integer
+                                        .parseInt(settingsService
+                                                .getUsersSettings(chatId)
+                                                .getNotifyTime()
+                                                .split(":")[0])
+                                )
+                        )
                         .build(),
                 BotState.NOTIFY_CHOICE
         );
