@@ -30,12 +30,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
  */
 @RequiredArgsConstructor
 public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
-
-    /** Service for managing user settings. */
-    private final SettingsService settingsService;
-
     /** List of available currencies for display and selection. */
     private static final List<String> AVAILABLE_CURRENCIES = List.of("USD", "EUR", "GBP");
+    /** Service for managing user settings. */
+    private final SettingsService settingsService;
 
     @Override
     public BotState getInvokedState() {
