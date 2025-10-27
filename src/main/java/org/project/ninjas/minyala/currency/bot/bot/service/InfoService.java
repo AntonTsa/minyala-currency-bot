@@ -41,6 +41,9 @@ public class InfoService {
 
         boolean foundCurrency = false;
 
+        if (userSettings.getCurrencies().isEmpty()) {
+            return "Не обрано жодної валюти для відображення.";
+        }
         for (String currency : userSettings.getCurrencies()) {
             boolean currencyFoundRates = false;
             for (CurrencyRate rate : rates) {
