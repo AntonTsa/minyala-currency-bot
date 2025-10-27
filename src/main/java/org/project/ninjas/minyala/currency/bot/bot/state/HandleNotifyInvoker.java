@@ -1,10 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.NOTIFY_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACK;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACKALL;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACKALLTEXT;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.EXEPTIONTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.notifyReplyMarkup;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
@@ -42,25 +39,25 @@ public class HandleNotifyInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text("Час:")
+                        .text(TEXT_NOTIFY_SETTINGS_BTN)
                         .replyMarkup(notifyReplyMarkup(Integer.parseInt(data.split(":")[0])))
                         .build();
                 return new BotResponse(msg, NOTIFY_CHOICE);
             }
 
-            case BACK -> {
+            case DATA_BACK_BTN -> {
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text(BACKALL)
+                        .text(TEXT_SETTINGS_MENU)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_SETTINGS);
             }
 
-            case BACKALL -> {
+            case DATA_BACK_MAIN_MENU_BTN -> {
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text(BACKALLTEXT)
+                        .text(TEXT_MAIN_MENU)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_MAIN_MENU);
@@ -69,7 +66,7 @@ public class HandleNotifyInvoker implements BotStateInvoker {
             default -> {
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text(EXEPTIONTEXT)
+                        .text(TEXT_EXCEPTION)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, this.getInvokedState());
