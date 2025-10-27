@@ -13,18 +13,27 @@ import org.slf4j.LoggerFactory;
  * Monobank, PrivatBank and NBU.
  * Combines their data into a unified list of {@link CurrencyRate}
  * objects for further processing or display in the Telegram bot.
+ * Implemented as a singleton to ensure a single shared cache
+ * across all bank service instances.
  */
 public class BankAggregatorServiceImpl implements BankAggregatorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BankAggregatorServiceImpl.class);
-    private final List<BankRateService> bankServices;
 
-    /**
-     * Creates a new aggregator with custom bank services.
-     *
-     * @param bankServices list of {@link BankRateService} instances
-     */
-    public BankAggregatorServiceImpl(List<BankRateService> bankServices) {
-        this.bankServices = new ArrayList<>(bankServices);
+    /** Singleton instance. */
+    private static final BankAggregatorServiceImpl INSTANCE = new BankAggregatorServiceImpl();
+
+    private final List<BankRateService> bankServices = new ArrayList<>();
+
+    /** Private constructor initializes single instances of all bank services. */
+    private BankAggregatorServiceImpl() {
+        bankServices.add(MonobankService.getInstance());
+        bankServices.add(PrivatBankService.getInstance());
+        bankServices.add(NbuService.getInstance());
+    }
+
+    /** Provides global singleton instance of this aggregator. */
+    public static BankAggregatorServiceImpl getInstance() {
+        return INSTANCE;
     }
 
     @Override
@@ -34,8 +43,7 @@ public class BankAggregatorServiceImpl implements BankAggregatorService {
             try {
                 combined.addAll(service.getRates());
             } catch (Exception e) {
-                LOGGER.error("Failed to fetch rates from {}: {}",
-                        service.getBankName(), e.getMessage());
+                LOGGER.error("Failed to fetch rates from {}: {}", service.getBankName(), e.getMessage());
             }
         }
         return combined;
