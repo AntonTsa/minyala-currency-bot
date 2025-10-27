@@ -15,7 +15,6 @@ import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilde
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
@@ -35,6 +34,9 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
 
     /** List of available currencies for display and selection. */
     private static final List<String> AVAILABLE_CURRENCIES = List.of("USD", "EUR", "GBP");
+
+    /** Simple instruction to final user about this menu. */
+    private static final String INSTRUCTION_TEXT_MSG = "Оберіть валюту:";
 
     /** Service for managing user settings. */
     private final SettingsService settingsService;
@@ -76,7 +78,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
             settingsService.saveUserSettings(userSettings);
 
             message = buildCurrencyMenu(chatId, selectedCurrencies,
-                    "Оберіть валюту:");
+                    INSTRUCTION_TEXT_MSG);
             nextState = CURRENCY_CHOICE;
 
         } else if (DATA_BACK_BTN.equals(chosenButtonData)) {
@@ -100,7 +102,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         } else {
             // Default: refresh the current menu
             message = buildCurrencyMenu(chatId, selectedCurrencies,
-                    "Оберіть валюту:");
+                    INSTRUCTION_TEXT_MSG);
             nextState = CURRENCY_CHOICE;
         }
 
@@ -119,7 +121,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         List<String> selectedCurrencies = userSettings.getCurrencies();
 
         SendMessage message = buildCurrencyMenu(chatId, selectedCurrencies,
-                "Оберіть валюту:");
+                INSTRUCTION_TEXT_MSG);
         return new BotResponse(message, CURRENCY_CHOICE);
     }
 
@@ -138,7 +140,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
                     String label = currencies.contains(code) ? CHECKMARK + code : code;
                     return btn(label, code);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         // Build full keyboard layout
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup(
