@@ -24,11 +24,7 @@ public class NotificationScheduler {
     private final SettingsService settingsService;
     private final InfoService infoService;
     private final CurrencyBot bot;
-
-    // Пул для перевірки часу (1 потік)
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-    // Пул для відправки повідомлень (наприклад, до 10 одночасно)
     private final ExecutorService notificationPool = Executors.newFixedThreadPool(10);
 
     /**
@@ -65,8 +61,6 @@ public class NotificationScheduler {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
             for (UserSettings user : users) {
-                String notifyTime = user.getNotifyTime();
-                //if (notifyTime.equals("")) {
                 int userHour = LocalTime.parse(user.getNotifyTime(), formatter).getHour();
                 if (userHour == currentHour) {
                     notificationPool.submit(() -> sendNotification(
@@ -84,22 +78,14 @@ public class NotificationScheduler {
                     .chatId(chatId.toString())
                     .text(message)
                     .build());
-            System.out.println("✅ Sent to user: " + chatId);
+            LOGGER.info("Sent to user: {}", chatId);
         } catch (TelegramApiException e) {
-            System.err.println("❌ Failed to send to " + chatId + ": " + e.getMessage());
+            LOGGER.error("Failed to send to {}: {}", chatId, e.getMessage());
         }
     }
 
     private long computeInitialDelayMinutes() {
         int minutes = LocalTime.now().getMinute();
         return 60 - minutes; // скільки хвилин до наступної повної години
-    }
-
-    /**
-     * Shutdown the scheduler and notification pool.
-     */
-    public void shutdown() {
-        scheduler.shutdown();
-        notificationPool.shutdown();
     }
 }
