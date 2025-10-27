@@ -60,7 +60,7 @@ public final class ButtonNameLabelConstants {
     public static final String TEXT_EXCEPTION = "Немає такої команди";
 
     /***/
-    public static final String TEXT_OFF_BTN = "вимкнути";
+    public static final String TEXT_OFF_BTN = "Bимкнути сповіщення";
 
     /***/
     public static final String DATA_OFF_BTN = "OFF";
