@@ -1,8 +1,13 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
+import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.NOTIFY_CHOICE;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_BTN;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_MAIN_MENU_BTN;
+<<<<<<< Updated upstream
+=======
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_OFF_BTN;
+>>>>>>> Stashed changes
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_EXCEPTION;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_NOTIFY_SETTINGS_BTN;
@@ -17,6 +22,7 @@ import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 
 /***/
 @RequiredArgsConstructor
@@ -50,13 +56,25 @@ public class HandleNotifyInvoker implements BotStateInvoker {
                 return new BotResponse(msg, NOTIFY_CHOICE);
             }
 
+            case DATA_OFF_BTN -> {
+                userSettings.setNotifyTime("0");
+                settingsService.saveUserSettings(userSettings);
+
+                msg = SendMessage.builder()
+                        .chatId(chatId.toString())
+                        .text(TEXT_NOTIFY_SETTINGS_BTN)
+                        .replyMarkup(notifyReplyMarkup(0))
+                        .build();
+                return new BotResponse(msg, NOTIFY_CHOICE);
+            }
+
             case DATA_BACK_BTN -> {
                 msg = SendMessage.builder()
                         .chatId(chatId)
                         .text(TEXT_SETTINGS_MENU)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
-                return new BotResponse(msg, BotState.HANDLE_SETTINGS);
+                return new BotResponse(msg, HANDLE_SETTINGS);
             }
 
             case DATA_BACK_MAIN_MENU_BTN -> {

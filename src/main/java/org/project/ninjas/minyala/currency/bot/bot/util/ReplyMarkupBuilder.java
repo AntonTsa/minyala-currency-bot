@@ -128,6 +128,11 @@ public class ReplyMarkupBuilder {
             }
         }
         rows.add(row);
+        if (choose == 0) {
+            rows.add(List.of(btn(btnWithChoose(TEXT_OFF_BTN), DATA_OFF_BTN)));
+        } else {
+            rows.add(List.of(btn(TEXT_OFF_BTN, DATA_OFF_BTN)));
+        }
         rows.add(List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)));
         rows.add(List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN)));
 
