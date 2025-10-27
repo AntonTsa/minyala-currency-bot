@@ -4,10 +4,7 @@ import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.NOTIFY_CHOICE;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_BTN;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_MAIN_MENU_BTN;
-<<<<<<< Updated upstream
-=======
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_OFF_BTN;
->>>>>>> Stashed changes
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_EXCEPTION;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_NOTIFY_SETTINGS_BTN;
