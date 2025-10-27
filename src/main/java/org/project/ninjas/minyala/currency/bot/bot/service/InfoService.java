@@ -66,7 +66,6 @@ public class InfoService {
                                 buy,
                                 sell));
                     }
-
                 }
             }
             if (!currencyFoundRates) {
@@ -79,4 +78,36 @@ public class InfoService {
 
         return text.toString();
     }
+
+    /*
+     * === 🔧 INSTRUCTION FOR TEAM (REMOVE AFTER UPDATING) ===
+     *
+     * To align with the new singleton-based services and caching system:
+     *
+     * Replace the section below:
+     *
+     *   switch (userSettings.getBank().getDisplayName()) {
+     *       case "Приватбанк" -> selectedBanks.add(new PrivatBankService());
+     *       case "Монобанк" -> selectedBanks.add(new MonobankService());
+     *       case "НБУ" -> selectedBanks.add(new NbuService());
+     *       default -> selectedBanks.add(new PrivatBankService());
+     *   }
+     *
+     *   BankAggregatorService aggregatorService = new BankAggregatorServiceImpl(selectedBanks);
+     *
+     * WITH:
+     *
+     *   switch (userSettings.getBank().getDisplayName()) {
+     *       case "Приватбанк" -> selectedBanks.add(PrivatBankService.getInstance());
+     *       case "Монобанк" -> selectedBanks.add(MonobankService.getInstance());
+     *       case "НБУ" -> selectedBanks.add(NbuService.getInstance());
+     *       default -> selectedBanks.add(PrivatBankService.getInstance());
+     *   }
+     *
+     *   BankAggregatorService aggregatorService = BankAggregatorServiceImpl.getInstance();
+     *
+     * This enables caching and shared singletons across all service calls.
+     * After replacing, delete this comment block.
+     * ===========================================================
+     */
 }
