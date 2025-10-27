@@ -1,11 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.BANK_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACK;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACKALL;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.EXEPTIONTEXT;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.MAINMENUTEXT;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.SETTINGSTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkupWithChoose;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
@@ -46,7 +42,7 @@ public class HandleBankInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(Bank.PRIVAT.getDisplayName())
+                        .text(TEXT_BANK_SETTINGS_BTN)
                         .replyMarkup(bankReplyMarkupWithChoose(Bank.PRIVAT))
                         .build();
 
@@ -58,7 +54,7 @@ public class HandleBankInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(Bank.MONO.getDisplayName())
+                        .text(TEXT_BANK_SETTINGS_BTN)
                         .replyMarkup(bankReplyMarkupWithChoose(Bank.MONO))
                         .build();
 
@@ -70,24 +66,24 @@ public class HandleBankInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(Bank.NBU.getDisplayName())
+                        .text(TEXT_BANK_SETTINGS_BTN)
                         .replyMarkup(bankReplyMarkupWithChoose(Bank.NBU))
                         .build();
 
                 return new BotResponse(msg, BANK_CHOICE);
 
-            case BACK:
+            case DATA_BACK_BTN:
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text(SETTINGSTEXT)
+                        .text(TEXT_SETTINGS_MENU)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_SETTINGS);
 
-            case BACKALL:
+            case DATA_BACK_MAIN_MENU_BTN:
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text(MAINMENUTEXT)
+                        .text(TEXT_MAIN_MENU)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_MAIN_MENU);
@@ -95,7 +91,7 @@ public class HandleBankInvoker implements BotStateInvoker {
             default:
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text(EXEPTIONTEXT)
+                        .text(TEXT_EXCEPTION)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, this.getInvokedState());

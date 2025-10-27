@@ -1,11 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_DECIMAL_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACK;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.BACKALL;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.EXEPTIONTEXT;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.MAINMENUTEXT;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.SETTINGSTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.decimalReplyMarkupWithChoose;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
@@ -56,7 +52,7 @@ public class HandleDecimalInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(ONE)
+                        .text(TEXT_DECIMAL_SETTINGS_BTN)
                         .replyMarkup(decimalReplyMarkupWithChoose(ONE))
                         .build();
 
@@ -68,7 +64,7 @@ public class HandleDecimalInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(TWO)
+                        .text(TEXT_DECIMAL_SETTINGS_BTN)
                         .replyMarkup(decimalReplyMarkupWithChoose(TWO))
                         .build();
 
@@ -80,24 +76,24 @@ public class HandleDecimalInvoker implements BotStateInvoker {
 
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(THREE)
+                        .text(TEXT_DECIMAL_SETTINGS_BTN)
                         .replyMarkup(decimalReplyMarkupWithChoose(THREE))
                         .build();
 
                 return new BotResponse(msg, BotState.HANDLE_DECIMAL_CHOICE);
 
-            case BACK:
+            case DATA_BACK_BTN:
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text(SETTINGSTEXT)
+                        .text(TEXT_SETTINGS_MENU)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_SETTINGS);
 
-            case BACKALL:
+            case DATA_BACK_MAIN_MENU_BTN:
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text(MAINMENUTEXT)
+                        .text(TEXT_MAIN_MENU)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_MAIN_MENU);
@@ -105,7 +101,7 @@ public class HandleDecimalInvoker implements BotStateInvoker {
             default:
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text(EXEPTIONTEXT)
+                        .text(TEXT_EXCEPTION)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, this.getInvokedState());

@@ -1,5 +1,7 @@
 package org.project.ninjas.minyala.currency.bot.bot.util;
 
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -9,36 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
  * Utility class for building keyboard layouts.
  */
 public class ReplyMarkupBuilder {
-    /**
-     *  Button BACK.
-     */
-    public static final String BACK = "BACK";
-
-    /***/
-    public static final String BACKTEXT = "НАЗАД";
-
-    /**
-     *  Button BACK to main menu.
-     */
-    public static final String BACKALL = "BACKALL";
-
-    /***/
-    public static final String BACKALLTEXT = "ГОЛОВНЕ МЕНЮ";
-
-    /**
-     *  Text for Button "НАСТРОЙКИ" to main menu.
-     */
-    public static final String SETTINGSTEXT = "⚙️ Налаштування";
-
-    /**
-     *  Text for Button "ГОЛОВНЕ МЕНЮ" to main menu.
-     */
-    public static final String MAINMENUTEXT = "Головне меню";
-
-    /**
-     *  Text for ExeptionButton.
-     */
-    public static final String EXEPTIONTEXT = "Немає такої команди";
 
     private ReplyMarkupBuilder() {
         throw new UnsupportedOperationException("Utility class");
@@ -53,13 +25,13 @@ public class ReplyMarkupBuilder {
         return new InlineKeyboardMarkup(
                 List.of(List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Отримати інформацію")
-                                        .callbackData("CURRENT_INFO_BTN")
+                                        .text(TEXT_GET_INFO_BTN)
+                                        .callbackData(DATA_GET_INFO_BTN)
                                         .build()),
                         List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Змінити налаштування")
-                                        .callbackData("SETTINGS_BTN")
+                                        .text(TEXT_SETTINGS_MENU)
+                                        .callbackData(DATA_SETTINGS_MENU_BTN)
                                         .build()
                         ))
         );
@@ -73,11 +45,11 @@ public class ReplyMarkupBuilder {
     public static InlineKeyboardMarkup settingsReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(btn("Кількість знаків після коми", "DECIMAL_CHOICE")),
-                        List.of(btn("Банк", "BANK_CHOICE")),
-                        List.of(btn("Валюти", "CURRENCY_CHOICE")),
-                        List.of(btn("Час оповіщення", "NOTIFY_CHOICE")),
-                        List.of(btn(BACKTEXT, BACK))
+                        List.of(btn(TEXT_DECIMAL_SETTINGS_BTN, DATA_DECIMAL_SETTINGS_BTN)),
+                        List.of(btn(TEXT_BANK_SETTINGS_BTN, DATA_BANK_SETTINGS_BTN)),
+                        List.of(btn(TEXT_CURRENCY_SETTINGS_BTN, DATA_CURRENCY_SETTINGS_BTN)),
+                        List.of(btn(TEXT_NOTIFY_SETTINGS_BTN, DATA_NOTIFY_SETTINGS_BTN)),
+                        List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN))
                 )
         );
     }
@@ -101,8 +73,8 @@ public class ReplyMarkupBuilder {
             }
         }
         rows.add(row);
-        rows.add(List.of(btn(BACKTEXT, BACK)));
-        rows.add(List.of(btn(BACKALLTEXT, BACKALL)));
+        rows.add(List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)));
+        rows.add(List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN)));
         return new InlineKeyboardMarkup(rows);
     }
 
@@ -122,8 +94,8 @@ public class ReplyMarkupBuilder {
                 rows.add(List.of(btn(bank.getDisplayName(), bank.name())));
             }
         }
-        rows.add(List.of(btn(BACKTEXT, BACK)));
-        rows.add(List.of(btn(BACKALLTEXT, BACKALL)));
+        rows.add(List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)));
+        rows.add(List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN)));
         return new InlineKeyboardMarkup(rows);
     }
 
@@ -156,8 +128,8 @@ public class ReplyMarkupBuilder {
             }
         }
         rows.add(row);
-        rows.add(List.of(btn(BACKTEXT, BACK)));
-        rows.add(List.of(btn(BACKALLTEXT, BACKALL)));
+        rows.add(List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)));
+        rows.add(List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN)));
 
         return new InlineKeyboardMarkup(rows);
     }
@@ -184,6 +156,6 @@ public class ReplyMarkupBuilder {
      * @return new text button.
      */
     public static String btnWithChoose(String text) {
-        return "✅ " + text;
+        return CHECKMARK + text;
     }
 }
