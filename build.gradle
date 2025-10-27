@@ -58,7 +58,7 @@ checkstyleTest {
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.project_ninjas.minyala_currency_bot.AppLauncher'
+    mainClass = 'org.project_ninjas.minyala.currency.bot.AppLauncher'
 }
 
 tasks.named('test') {

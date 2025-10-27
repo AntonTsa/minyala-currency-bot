@@ -55,22 +55,18 @@ public class NotificationScheduler {
     }
 
     private void checkAndNotifyUsers() {
-        try {
-            int currentHour = LocalTime.now().getHour();
-            List<UserSettings> users = settingsService.getAllUserSettings();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        int currentHour = LocalTime.now().getHour();
+        List<UserSettings> users = settingsService.getAllUserSettings();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-            for (UserSettings user : users) {
-                if (!user.getNotifyTime().isEmpty()) {
-                    int userHour = LocalTime.parse(user.getNotifyTime(), formatter).getHour();
-                    if (userHour == currentHour) {
-                        notificationPool.submit(() -> sendNotification(
-                                user.getUserId(), infoService.getCurrencyInfo(user)));
-                    }
+        for (UserSettings user : users) {
+            if (!user.getNotifyTime().isEmpty()) {
+                int userHour = LocalTime.parse(user.getNotifyTime(), formatter).getHour();
+                if (userHour == currentHour) {
+                    notificationPool.submit(() -> sendNotification(
+                            user.getUserId(), infoService.getCurrencyInfo(user)));
                 }
             }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
         }
     }
 
