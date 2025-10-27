@@ -59,6 +59,12 @@ public final class ButtonNameLabelConstants {
     /** Exception button text. */
     public static final String TEXT_EXCEPTION = "Немає такої команди";
 
+    /***/
+    public static final String TEXT_OFF_BTN = "вимкнути";
+
+    /***/
+    public static final String DATA_OFF_BTN = "OFF";
+
     /** Checkmark symbol. */
     public static final String CHECKMARK = "✅ ";
 
