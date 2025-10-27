@@ -5,6 +5,8 @@ import java.util.List;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankAggregatorService;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Aggregates exchange rates from all supported banks:
@@ -13,7 +15,7 @@ import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
  * objects for further processing or display in the Telegram bot.
  */
 public class BankAggregatorServiceImpl implements BankAggregatorService {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(BankAggregatorServiceImpl.class);
     private final List<BankRateService> bankServices;
 
     /**
@@ -32,8 +34,8 @@ public class BankAggregatorServiceImpl implements BankAggregatorService {
             try {
                 combined.addAll(service.getRates());
             } catch (Exception e) {
-                System.err.println("⚠️ Failed to fetch rates from " + service.getBankName()
-                        + ": " + e.getMessage());
+                LOGGER.error("Failed to fetch rates from {}: {}",
+                        service.getBankName(), e.getMessage());
             }
         }
         return combined;
