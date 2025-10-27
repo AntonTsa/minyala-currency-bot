@@ -61,10 +61,12 @@ public class NotificationScheduler {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
             for (UserSettings user : users) {
-                int userHour = LocalTime.parse(user.getNotifyTime(), formatter).getHour();
-                if (userHour == currentHour) {
-                    notificationPool.submit(() -> sendNotification(
-                            user.getUserId(), infoService.getCurrencyInfo(user)));
+                if (!user.getNotifyTime().isEmpty()) {
+                    int userHour = LocalTime.parse(user.getNotifyTime(), formatter).getHour();
+                    if (userHour == currentHour) {
+                        notificationPool.submit(() -> sendNotification(
+                                user.getUserId(), infoService.getCurrencyInfo(user)));
+                    }
                 }
             }
         } catch (Exception e) {
