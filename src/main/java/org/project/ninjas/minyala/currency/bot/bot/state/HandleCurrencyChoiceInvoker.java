@@ -3,12 +3,7 @@ package org.project.ninjas.minyala.currency.bot.bot.state;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.CURRENCY_CHOICE;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
-import static org.project.ninjas.minyala.currency.bot.bot.util.BotStateLabelConstants.BACK;
-import static org.project.ninjas.minyala.currency.bot.bot.util.BotStateLabelConstants.BACK_ALL;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.BTN_BACK;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.BTN_BACK_MAIN;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.BTN_MAIN_MENU;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.BTN_SETTINGS;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.btn;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
@@ -31,11 +26,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 @RequiredArgsConstructor
 public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
 
-    /** Service for managing user settings. */
-    private final SettingsService settingsService;
-
     /** List of available currencies for display and selection. */
     private static final List<String> AVAILABLE_CURRENCIES = List.of("USD", "EUR", "GBP");
+
+    /** Service for managing user settings. */
+    private final SettingsService settingsService;
 
     @Override
     public BotState getInvokedState() {
@@ -74,23 +69,23 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
             settingsService.saveUserSettings(userSettings);
 
             message = buildCurrencyMenu(chatId, selectedCurrencies,
-                    "Select additional currencies you want to track:");
+                    "Оберіть валюту:");
             nextState = CURRENCY_CHOICE;
 
-        } else if (BACK.equals(chosenButtonData)) {
+        } else if (DATA_BACK_BTN.equals(chosenButtonData)) {
             // Return to settings menu
             message = SendMessage.builder()
                     .chatId(chatId)
-                    .text(BTN_SETTINGS)
+                    .text(TEXT_SETTINGS_MENU)
                     .replyMarkup(settingsReplyMarkup())
                     .build();
             nextState = HANDLE_SETTINGS;
 
-        } else if (BACK_ALL.equals(chosenButtonData)) {
+        } else if (DATA_BACK_MAIN_MENU_BTN.equals(chosenButtonData)) {
             // Return to main menu
             message = SendMessage.builder()
                     .chatId(chatId)
-                    .text(BTN_MAIN_MENU)
+                    .text(TEXT_MAIN_MENU)
                     .replyMarkup(settingsReplyMarkup())
                     .build();
             nextState = HANDLE_MAIN_MENU;
@@ -98,7 +93,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         } else {
             // Default: refresh the current menu
             message = buildCurrencyMenu(chatId, selectedCurrencies,
-                    "Select the currencies you want to track:");
+                    "Оберіть валюту:");
             nextState = CURRENCY_CHOICE;
         }
 
@@ -117,7 +112,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         List<String> selectedCurrencies = userSettings.getCurrencies();
 
         SendMessage message = buildCurrencyMenu(chatId, selectedCurrencies,
-                "Select the currencies you want to track:");
+                "Оберіть валюту:");
         return new BotResponse(message, CURRENCY_CHOICE);
     }
 
@@ -133,7 +128,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         // Build currency buttons dynamically
         List<InlineKeyboardButton> currencyButtons = AVAILABLE_CURRENCIES.stream()
                 .map(code -> {
-                    String label = currencies.contains(code) ? "✅ " + code : code;
+                    String label = currencies.contains(code) ? CHECKMARK + code : code;
                     return btn(label, code);
                 })
                 .collect(Collectors.toList());
@@ -142,10 +137,8 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup(
                 List.of(
                         currencyButtons,
-                        List.of(
-                                btn(BTN_BACK, BACK),
-                                btn(BTN_BACK_MAIN, BACK_ALL)
-                        )
+                        List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)),
+                        List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN))
                 )
         );
 

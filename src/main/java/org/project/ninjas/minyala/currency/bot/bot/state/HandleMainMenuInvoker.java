@@ -2,8 +2,7 @@ package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.EXEPTIONTEXT;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.SETTINGSTEXT;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
@@ -34,8 +33,8 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
             settingsService.createUserSettings(chatId);
         }
         return switch (update.getCallbackQuery().getData()) {
-            case "SETTINGS_BTN" -> handleSettingsButton(chatId);
-            case "CURRENT_INFO_BTN" -> handleCurrentInfoButton(chatId);
+            case DATA_SETTINGS_MENU_BTN -> handleSettingsButton(chatId);
+            case DATA_GET_INFO_BTN -> handleCurrentInfoButton(chatId);
             default -> handleExceptionalCases(chatId);
         };
     }
@@ -50,7 +49,7 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
         return new BotResponse(
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text(EXEPTIONTEXT)
+                        .text(TEXT_EXCEPTION)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build(),
                 this.getInvokedState()
@@ -91,7 +90,7 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
     private BotResponse handleSettingsButton(long chatId) {
         SendMessage message = SendMessage.builder()
                 .chatId(chatId)
-                .text(SETTINGSTEXT)
+                .text(TEXT_SETTINGS_MENU)
                 .replyMarkup(settingsReplyMarkup())
                 .build();
         return new BotResponse(message, HANDLE_SETTINGS);
