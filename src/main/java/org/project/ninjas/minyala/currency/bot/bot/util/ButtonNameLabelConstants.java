@@ -11,7 +11,6 @@ public final class ButtonNameLabelConstants {
     /***/
     public static final String DATA_GET_INFO_BTN = "CURRENT_INFO_BTN";
 
-
     /** Settings button. */
     public static final String TEXT_SETTINGS_MENU = "⚙️ Налаштування";
 
@@ -56,7 +55,6 @@ public final class ButtonNameLabelConstants {
 
     /***/
     public static final String DATA_BACK_MAIN_MENU_BTN = "BACKALL";
-
 
     /** Exception button text. */
     public static final String TEXT_EXCEPTION = "Немає такої команди";

@@ -11,6 +11,7 @@ import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilde
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
+import org.project.ninjas.minyala.currency.bot.bot.service.InfoService;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -23,6 +24,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class HandleMainMenuInvoker implements BotStateInvoker {
     private final SettingsService settingsService;
+    private final InfoService infoService;
 
     @Override
     public BotState getInvokedState() {
@@ -72,7 +74,7 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
             settingsService.createUserSettings(chatId);
             userSettings = settingsService.getUsersSettings(chatId);
         }
-        String text = HandleGetInfo.getCurrencyInfo(userSettings);
+        String text = infoService.getCurrencyInfo(userSettings);
 
         return new BotResponse(
                 SendMessage.builder()

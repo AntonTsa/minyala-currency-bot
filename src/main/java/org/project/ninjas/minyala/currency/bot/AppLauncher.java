@@ -3,8 +3,10 @@ package org.project.ninjas.minyala.currency.bot;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.project.ninjas.minyala.currency.bot.bot.BotController;
 import org.project.ninjas.minyala.currency.bot.bot.CurrencyBot;
+import org.project.ninjas.minyala.currency.bot.bot.service.InfoService;
 import org.project.ninjas.minyala.currency.bot.bot.service.InvokersService;
 import org.project.ninjas.minyala.currency.bot.bot.service.UserStateService;
+import org.project.ninjas.minyala.currency.bot.notifications.NotificationScheduler;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,27 +46,31 @@ public final class AppLauncher {
         }
 
         SettingsService settingsService = new SettingsService();
+        InfoService infoService = new InfoService();
 
         try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(
-                    DefaultBotSession.class
-            );
-            botsApi.registerBot(
-                    new CurrencyBot(
-                            botToken,
-                            botUsername,
-                            new BotController(
-                                    new UserStateService(),
-                                    new InvokersService(
-                                            settingsService
-                                    )
+            CurrencyBot bot = new CurrencyBot(
+                    botToken,
+                    botUsername,
+                    new BotController(
+                            new UserStateService(),
+                            new InvokersService(
+                                    settingsService,
+                                    infoService
                             )
                     )
             );
+
+            TelegramBotsApi botsApi = new TelegramBotsApi(
+                    DefaultBotSession.class
+            );
+            botsApi.registerBot(bot);
+
+            NotificationScheduler scheduler = new NotificationScheduler(settingsService, infoService, bot);
+            scheduler.start();
         } catch (TelegramApiException e) {
             LOGGER.error(e.getMessage());
         }
-
         LOGGER.info("Bot successfully loaded");
     }
 }

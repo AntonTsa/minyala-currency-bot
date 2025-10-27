@@ -1,5 +1,6 @@
 package org.project.ninjas.minyala.currency.bot.settings;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 
@@ -37,5 +38,14 @@ public class SettingsService {
      */
     public UserSettings getUsersSettings(Long userId) {
         return settings.get(userId);
+    }
+
+    /**
+     * Get all users' settings.
+     *
+     * @return settings
+     */
+    public List<UserSettings> getAllUserSettings() {
+        return settings.values().stream().toList();
     }
 }

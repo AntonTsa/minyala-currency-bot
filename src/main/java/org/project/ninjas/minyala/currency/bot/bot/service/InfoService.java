@@ -1,4 +1,4 @@
-package org.project.ninjas.minyala.currency.bot.bot.state;
+package org.project.ninjas.minyala.currency.bot.bot.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +13,17 @@ import org.project.ninjas.minyala.currency.bot.banks.util.CurrencyFormatter;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 
 /**
- * Handles the retrieval and formatting of currency information
- * based on user settings.
+ * Service to get currency information based on user settings.
  */
-public class HandleGetInfo {
+public class InfoService {
 
     /**
-     * Retrieves and formats currency information according to user settings.
+     * Get currency information based on user settings.
      *
-     * @param userSettings the user's settings including bank, currencies, and decimal places
-     * @return formatted string with currency rates
+     * @param userSettings - user's settings
+     * @return formatted currency information
      */
-    public static String getCurrencyInfo(UserSettings userSettings) {
+    public String getCurrencyInfo(UserSettings userSettings) {
         List<BankRateService> selectedBanks = new ArrayList<>();
 
         switch (userSettings.getBank().getDisplayName()) {

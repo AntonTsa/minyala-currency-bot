@@ -31,10 +31,11 @@ public class InvokersService {
      * The constructor creates default handlers and put it in map.
      *
      * @param settingsService - settings service
+     * @param infoService - info service
      */
-    public InvokersService(SettingsService settingsService) {
+    public InvokersService(SettingsService settingsService, InfoService infoService) {
         invokers.put(HANDLE_START, new HandleStartInvoker());
-        invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker(settingsService));
+        invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker(settingsService, infoService));
         invokers.put(HANDLE_SETTINGS, new HandleSettingsInvoker(settingsService));
         invokers.put(HANDLE_DECIMAL_CHOICE, new HandleDecimalInvoker(settingsService));
         invokers.put(BANK_CHOICE, new HandleBankInvoker(settingsService));
