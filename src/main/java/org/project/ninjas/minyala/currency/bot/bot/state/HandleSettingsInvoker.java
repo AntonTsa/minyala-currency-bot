@@ -1,6 +1,12 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BANK_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_CURRENCY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_DECIMAL_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_NOTIFY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BACK_MAIN_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_EXCEPTION;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkupWithChoose;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.decimalReplyMarkupWithChoose;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
