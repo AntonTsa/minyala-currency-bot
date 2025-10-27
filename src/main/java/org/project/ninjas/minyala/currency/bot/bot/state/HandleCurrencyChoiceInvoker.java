@@ -3,8 +3,15 @@ package org.project.ninjas.minyala.currency.bot.bot.state;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.CURRENCY_CHOICE;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.HANDLE_SETTINGS;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.CHECKMARK;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_MAIN_MENU_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BACK_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BACK_MAIN_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_SETTINGS_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.btn;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import java.util.List;
@@ -86,7 +93,7 @@ public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
             message = SendMessage.builder()
                     .chatId(chatId)
                     .text(TEXT_MAIN_MENU)
-                    .replyMarkup(settingsReplyMarkup())
+                    .replyMarkup(mainMenuReplyMarkup())
                     .build();
             nextState = HANDLE_MAIN_MENU;
 
