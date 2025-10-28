@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * First step implementation.
  */
 @RequiredArgsConstructor
-public class HandleStartInvokerImpl implements BotStateInvoker {
+public class HandleStartInvoker implements BotStateInvoker {
 
     @Override
     public BotState getInvokedState() {

@@ -20,7 +20,7 @@ import org.project.ninjas.minyala.currency.bot.banks.util.HttpClientProvider;
 /**
  * Verifies MonobankService parsing and cache behavior using a mocked HTTP client.
  */
-public class MonobankServiceRealJsonTest {
+public class MonobankServiceImplRealJsonTest {
 
     private static final String REAL_MONOBANK_JSON = """
             [{"currencyCodeA":840,"currencyCodeB":980,"date":1761632406,"rateBuy":41.8,"rateSell":42.1905},
@@ -30,15 +30,14 @@ public class MonobankServiceRealJsonTest {
              {"currencyCodeA":392,"currencyCodeB":980,"date":1761659546,"rateCross":0.2765}]
             """;
 
-    private MonobankService service;
+    private MonobankServiceImpl service;
     private HttpClient httpClientMock;
-    private HttpResponse<String> httpResponseMock;
 
     @BeforeEach
     void setUp() throws Exception {
-        service = MonobankService.getInstance();
+        service = MonobankServiceImpl.getInstance();
         httpClientMock = mock(HttpClient.class);
-        httpResponseMock = mock(HttpResponse.class);
+        HttpResponse<String> httpResponseMock = mock(HttpResponse.class);
 
         when(httpResponseMock.statusCode()).thenReturn(200);
         when(httpResponseMock.body()).thenReturn(REAL_MONOBANK_JSON);

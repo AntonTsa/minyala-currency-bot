@@ -24,10 +24,10 @@ import org.slf4j.LoggerFactory;
  * PrivatBank implementation of {@link BankRateService}.
  * Provides exchange rates with minimal in-memory caching (1 hour).
  */
-public class PrivatBankService implements BankRateService {
+public class PrivatBankServiceImpl implements BankRateService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrivatBankService.class);
-    private static final PrivatBankService INSTANCE = new PrivatBankService();
+    private static final Logger LOGGER = LoggerFactory.getLogger(PrivatBankServiceImpl.class);
+    private static final PrivatBankServiceImpl INSTANCE = new PrivatBankServiceImpl();
 
     private static final String BANK_NAME = "PrivatBank";
     private static final String API_URL =
@@ -39,23 +39,21 @@ public class PrivatBankService implements BankRateService {
     private volatile List<CurrencyRate> cachedRates;
     private volatile Instant lastFetchAt;
 
-    private PrivatBankService() {
+    private PrivatBankServiceImpl() {
     }
 
     /**
-     * Returns the singleton instance of {@link PrivatBankService}.
+     * Returns the singleton instance of {@link PrivatBankServiceImpl}.
      *
      * @return the single shared instance of this service
      */
-    public static PrivatBankService getInstance() {
+    public static PrivatBankServiceImpl getInstance() {
         return INSTANCE;
     }
 
     /**
      * Lazily provides a shared {@link HttpClient} instance.
-     * <p>
      * Avoids static initialization before Mockito mocks are applied in tests.
-     * </p>
      *
      * @return the shared HttpClient
      */

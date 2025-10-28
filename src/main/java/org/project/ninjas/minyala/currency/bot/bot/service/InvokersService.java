@@ -12,13 +12,13 @@ import java.util.EnumMap;
 import java.util.Map;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotState;
 import org.project.ninjas.minyala.currency.bot.bot.state.BotStateInvoker;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleBankInvokerImpl;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleCurrencyChoiceInvokerImpl;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleDecimalInvokerImpl;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleMainMenuInvokerImpl;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleNotifyInvokerImpl;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleSettingsInvokerImpl;
-import org.project.ninjas.minyala.currency.bot.bot.state.HandleStartInvokerImpl;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleBankInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleCurrencyChoiceInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleDecimalInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleMainMenuInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleNotifyInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleSettingsInvoker;
+import org.project.ninjas.minyala.currency.bot.bot.state.HandleStartInvoker;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 
 /**
@@ -34,13 +34,13 @@ public class InvokersService {
      * @param infoService - info service
      */
     public InvokersService(SettingsService settingsService, InfoService infoService) {
-        invokers.put(HANDLE_START, new HandleStartInvokerImpl());
-        invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvokerImpl(settingsService, infoService));
-        invokers.put(HANDLE_SETTINGS, new HandleSettingsInvokerImpl(settingsService));
-        invokers.put(HANDLE_DECIMAL_CHOICE, new HandleDecimalInvokerImpl(settingsService));
-        invokers.put(BANK_CHOICE, new HandleBankInvokerImpl(settingsService));
-        invokers.put(CURRENCY_CHOICE, new HandleCurrencyChoiceInvokerImpl(settingsService));
-        invokers.put(NOTIFY_CHOICE, new HandleNotifyInvokerImpl(settingsService));
+        invokers.put(HANDLE_START, new HandleStartInvoker());
+        invokers.put(HANDLE_MAIN_MENU, new HandleMainMenuInvoker(settingsService, infoService));
+        invokers.put(HANDLE_SETTINGS, new HandleSettingsInvoker(settingsService));
+        invokers.put(HANDLE_DECIMAL_CHOICE, new HandleDecimalInvoker(settingsService));
+        invokers.put(BANK_CHOICE, new HandleBankInvoker(settingsService));
+        invokers.put(CURRENCY_CHOICE, new HandleCurrencyChoiceInvoker(settingsService));
+        invokers.put(NOTIFY_CHOICE, new HandleNotifyInvoker(settingsService));
     }
 
     /**

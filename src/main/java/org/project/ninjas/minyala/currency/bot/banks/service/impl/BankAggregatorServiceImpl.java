@@ -26,9 +26,9 @@ public class BankAggregatorServiceImpl implements BankAggregatorService {
 
     /** Private constructor initializes single instances of all bank services. */
     private BankAggregatorServiceImpl() {
-        bankServices.add(MonobankService.getInstance());
-        bankServices.add(PrivatBankService.getInstance());
-        bankServices.add(NbuService.getInstance());
+        bankServices.add(MonobankServiceImpl.getInstance());
+        bankServices.add(PrivatBankServiceImpl.getInstance());
+        bankServices.add(NbuServiceImpl.getInstance());
     }
 
     /**
