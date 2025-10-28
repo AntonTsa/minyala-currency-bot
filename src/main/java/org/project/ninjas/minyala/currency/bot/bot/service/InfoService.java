@@ -40,15 +40,22 @@ public class InfoService {
             };
 
             text.append("Курс у ").append(bankDisplayName).append(":\n");
-
             boolean foundCurrency = false;
 
             for (String currency : userSettings.getCurrencies()) {
                 boolean currencyFound = false;
 
                 for (CurrencyRate rate : allRates) {
-                    if (rate.getBankName().equals(internalBankName)
-                            && rate.getCurrency().equals(currency)) {
+                    // Normalize numeric codes to ISO strings for comparison
+                    String normalizedCurrency = switch (rate.getCurrency()) {
+                        case "840" -> "USD";
+                        case "978" -> "EUR";
+                        case "826" -> "GBP";
+                        default -> rate.getCurrency();
+                    };
+
+                    if (internalBankName.equals(rate.getBankName())
+                            && currency.equalsIgnoreCase(normalizedCurrency)) {
                         currencyFound = true;
                         foundCurrency = true;
 
@@ -57,7 +64,7 @@ public class InfoService {
                                     CurrencyFormatter.format(rate.getRate(), digits);
                             text.append(String.format(
                                     "%s/UAH - Офіційний курс: %s%n",
-                                    rate.getCurrency(), officialRate));
+                                    normalizedCurrency, officialRate));
                         } else {
                             String buy = rate.getBuy() > 0
                                     ? CurrencyFormatter.format(rate.getBuy(), digits)
@@ -67,7 +74,7 @@ public class InfoService {
                                     : "-";
                             text.append(String.format(
                                     "%s/UAH - Купівля: %s; Продаж: %s%n",
-                                    rate.getCurrency(), buy, sell));
+                                    normalizedCurrency, buy, sell));
                         }
                     }
                 }
