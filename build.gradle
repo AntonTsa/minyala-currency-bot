@@ -28,6 +28,7 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
     testImplementation libs.mockito
+    testImplementation 'org.awaitility:awaitility:4.2.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     compileOnly 'org.projectlombok:lombok:1.18.42'

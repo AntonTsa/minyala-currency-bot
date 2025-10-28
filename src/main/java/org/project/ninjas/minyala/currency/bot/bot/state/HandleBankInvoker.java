@@ -104,10 +104,10 @@ public class HandleBankInvoker implements BotStateInvoker {
      * @param chatId chatId
      * @return the bank's list
      */
-    public List<String> saveToUserSettings(String bank, Long chatId) {
+    private List<String> saveToUserSettings(String bank, Long chatId) {
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
 
-        List<String> banks = userSettings.getBank();
+        List<String> banks = userSettings.getBanks();
 
         if (banks.contains(bank)) {
             banks.remove(bank);

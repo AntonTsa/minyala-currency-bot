@@ -70,10 +70,6 @@ public class HandleMainMenuInvoker implements BotStateInvoker {
     private BotResponse handleCurrentInfoButton(long chatId) {
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
 
-        if (userSettings == null) {
-            settingsService.createUserSettings(chatId);
-            userSettings = settingsService.getUsersSettings(chatId);
-        }
         String text = infoService.getCurrencyInfo(userSettings);
 
         return new BotResponse(

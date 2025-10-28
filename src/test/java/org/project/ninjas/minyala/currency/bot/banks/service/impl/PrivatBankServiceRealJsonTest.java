@@ -1,4 +1,4 @@
-package org.project.ninjas.minyala.currency.bot.banks;
+package org.project.ninjas.minyala.currency.bot.banks.service.impl;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -15,35 +15,33 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.NbuService;
 import org.project.ninjas.minyala.currency.bot.banks.util.HttpClientProvider;
 
 /**
- * Unit test for {@link NbuService} using real JSON content from NBU API.
- * Validates correct parsing and one-hour cache behavior.
+ * Unit test for {@link PrivatBankService} using real PrivatBank JSON data.
+ * Verifies correct parsing and cache behavior with mocked HTTP client.
  */
-public class NbuServiceRealJsonTest {
+public class PrivatBankServiceRealJsonTest {
 
-    private static final String REAL_NBU_JSON = """
+    private static final String REAL_PRIVAT_JSON = """
             [
-             {"r030":840,"txt":"Долар США","rate":42.0831,"cc":"USD","exchangedate":"29.10.2025"},
-             {"r030":978,"txt":"Євро","rate":48.9784,"cc":"EUR","exchangedate":"29.10.2025"},
-             {"r030":392,"txt":"Єна","rate":0.27656,"cc":"JPY","exchangedate":"29.10.2025"}
+             {"ccy":"EUR","base_ccy":"UAH","buy":"48.40000","sale":"49.40000"},
+             {"ccy":"USD","base_ccy":"UAH","buy":"41.65000","sale":"42.25000"}
             ]
             """;
 
-    private NbuService service;
+    private PrivatBankService service;
     private HttpClient httpClientMock;
     private HttpResponse<String> httpResponseMock;
 
     @BeforeEach
     void setUp() throws Exception {
-        service = NbuService.getInstance();
+        service = PrivatBankService.getInstance();
         httpClientMock = mock(HttpClient.class);
         httpResponseMock = mock(HttpResponse.class);
 
         when(httpResponseMock.statusCode()).thenReturn(200);
-        when(httpResponseMock.body()).thenReturn(REAL_NBU_JSON);
+        when(httpResponseMock.body()).thenReturn(REAL_PRIVAT_JSON);
         when(httpClientMock.send(any(), any(HttpResponse.BodyHandler.class)))
                 .thenReturn(httpResponseMock);
     }
@@ -54,23 +52,24 @@ public class NbuServiceRealJsonTest {
                      Mockito.mockStatic(HttpClientProvider.class)) {
             mockedProvider.when(HttpClientProvider::getClient).thenReturn(httpClientMock);
 
-            // First call → should fetch and parse data
+            // First call → should parse JSON
             List<CurrencyRate> first = service.getRates();
-            Assertions.assertFalse(first.isEmpty(), "Should parse real NBU JSON data");
+            Assertions.assertFalse(first.isEmpty(), "Should parse PrivatBank JSON");
             verify(httpClientMock, times(1)).send(any(), any());
 
-            // Second call → should return cached data (no new HTTP calls)
+            // Second call → should use cache
             List<CurrencyRate> second = service.getRates();
-            Assertions.assertSame(first, second, "Should return cached data");
+            Assertions.assertSame(first, second, "Should reuse cached data");
             verify(httpClientMock, times(1)).send(any(), any());
 
-            // Verify correctness for a known entry
+            // Verify one known entry
             CurrencyRate usd = first.stream()
                     .filter(r -> "USD".equals(r.getCurrency()))
                     .findFirst()
                     .orElseThrow();
-            Assertions.assertEquals("NBU", usd.getBankName());
-            Assertions.assertEquals(42.0831, usd.getRate(), 0.0001);
+            Assertions.assertEquals("PrivatBank", usd.getBankName());
+            Assertions.assertEquals(41.65, usd.getBuy(), 0.0001);
+            Assertions.assertEquals(42.25, usd.getSell(), 0.0001);
         }
     }
 }
