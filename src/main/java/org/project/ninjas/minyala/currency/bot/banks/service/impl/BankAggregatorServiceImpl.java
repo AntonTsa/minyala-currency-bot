@@ -1,40 +1,39 @@
 package org.project.ninjas.minyala.currency.bot.banks.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankAggregatorService;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Aggregates exchange rates from all supported banks:
  * Monobank, PrivatBank and NBU.
  * Combines their data into a unified list of {@link CurrencyRate}
  * objects for further processing or display in the Telegram bot.
+ * Implemented as a singleton to ensure a single shared cache
+ * across all bank service instances.
  */
 public class BankAggregatorServiceImpl implements BankAggregatorService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BankAggregatorServiceImpl.class);
 
-    private final List<BankRateService> bankServices;
+    /** Singleton instance. */
+    private static final BankAggregatorServiceImpl INSTANCE = new BankAggregatorServiceImpl();
 
-    /**
-     * Creates a new aggregator with default bank implementations.
-     */
-    public BankAggregatorServiceImpl() {
-        this.bankServices = new ArrayList<>();
-        this.bankServices.add(new MonobankService());
-        this.bankServices.add(new PrivatBankService());
-        this.bankServices.add(new NbuService());
+    private final List<BankRateService> bankServices = new ArrayList<>();
+
+    /** Private constructor initializes single instances of all bank services. */
+    private BankAggregatorServiceImpl() {
+        bankServices.add(MonobankService.getInstance());
+        bankServices.add(PrivatBankService.getInstance());
+        bankServices.add(NbuService.getInstance());
     }
 
-    /**
-     * Creates a new aggregator with custom bank services.
-     *
-     * @param bankServices list of {@link BankRateService} instances
-     */
-    public BankAggregatorServiceImpl(List<BankRateService> bankServices) {
-        this.bankServices = new ArrayList<>(bankServices);
+    /** Provides global singleton instance of this aggregator. */
+    public static BankAggregatorServiceImpl getInstance() {
+        return INSTANCE;
     }
 
     @Override
@@ -44,22 +43,9 @@ public class BankAggregatorServiceImpl implements BankAggregatorService {
             try {
                 combined.addAll(service.getRates());
             } catch (Exception e) {
-                System.err.println("⚠️ Failed to fetch rates from " + service.getBankName()
-                        + ": " + e.getMessage());
+                LOGGER.error("Failed to fetch rates from {}: {}", service.getBankName(), e.getMessage());
             }
         }
         return combined;
-    }
-
-    @Override
-    public List<CurrencyRate> getRatesByCurrency(String currency) {
-        if (currency == null || currency.isBlank()) {
-            return Collections.emptyList();
-        }
-
-        String normalized = currency.trim().toUpperCase();
-        return getAllRates().stream()
-                .filter(rate -> normalized.equalsIgnoreCase(rate.getCurrency()))
-                .collect(Collectors.toList());
     }
 }

@@ -10,20 +10,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 public class CurrencyBot extends TelegramLongPollingBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(CurrencyBot.class);
-    /**
-     * Bot Username.
-     */
     private final String botUsername;
-    /**
-     * Bot Controller.
-     */
     private final BotController botController;
 
     /**
      * Constructor with params.
      *
-     * @param botToken - token, got from.env
-     * @param botUsername - username, got from .env
+     * @param botToken      - token, got from.env
+     * @param botUsername   - username, got from .env
      * @param botController - controller for handling updates
      */
     public CurrencyBot(

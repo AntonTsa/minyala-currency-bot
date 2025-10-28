@@ -1,20 +1,30 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
 import static org.project.ninjas.minyala.currency.bot.bot.state.BotState.BANK_CHOICE;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_MAIN_MENU_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BANK_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_EXCEPTION;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_MAIN_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_SETTINGS_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkupWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
-import org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder;
+import org.project.ninjas.minyala.currency.bot.bot.util.Bank;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 
-/***/
+
+/**
+ *  Bank menu button handler.
+ */
 @RequiredArgsConstructor
 public class HandleBankInvoker implements BotStateInvoker {
 
@@ -27,80 +37,87 @@ public class HandleBankInvoker implements BotStateInvoker {
 
     @Override
     public BotResponse invoke(Update update) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
-        UserSettings userSettings = settingsService.getUsersSettings(chatId);
+
+        Long chatId = update.getCallbackQuery().getMessage().getChatId();
         String data = update.getCallbackQuery().getData();
         SendMessage msg = new SendMessage();
 
         switch (data) {
-            case "ПриватБанк":
-                userSettings.setBank(PRIVAT.getDisplayName());
-                settingsService.saveUserSettings(userSettings);
-
-                InlineKeyboardMarkup markup1 = bankReplyMarkupWithChoose(
-                        btnWithChoose(PRIVAT.getDisplayName()), MONO.getDisplayName(), NBU.getDisplayName());
-
+            case "PRIVAT" -> {
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(PRIVAT.getDisplayName())
-                        .replyMarkup(markup1)
+                        .text(TEXT_BANK_SETTINGS_BTN)
+                        .replyMarkup(bankReplyMarkupWithChoose(
+                                saveToUserSettings(Bank.PRIVAT.getDisplayName(), chatId)))
                         .build();
-
                 return new BotResponse(msg, BANK_CHOICE);
-
-            case "МоноБанк":
-                userSettings.setBank(MONO.getDisplayName());
-                settingsService.saveUserSettings(userSettings);
-
-                InlineKeyboardMarkup markup2 = bankReplyMarkupWithChoose(
-                        PRIVAT.getDisplayName(), btnWithChoose(MONO.getDisplayName()), NBU.getDisplayName());
-
+            }
+            case "MONO" -> {
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(MONO.getDisplayName())
-                        .replyMarkup(markup2)
+                        .text(TEXT_BANK_SETTINGS_BTN)
+                        .replyMarkup(bankReplyMarkupWithChoose(
+                                saveToUserSettings(Bank.MONO.getDisplayName(), chatId)))
                         .build();
-
                 return new BotResponse(msg, BANK_CHOICE);
-
-            case "НБУ":
-                userSettings.setBank(NBU.getDisplayName());
-                settingsService.saveUserSettings(userSettings);
-
-                InlineKeyboardMarkup markup3 = bankReplyMarkupWithChoose(
-                        PRIVAT.getDisplayName(), MONO.getDisplayName(), btnWithChoose(NBU.getDisplayName()));
-
+            }
+            case "NBU" -> {
                 msg = SendMessage.builder()
                         .chatId(chatId.toString())
-                        .text(NBU.getDisplayName())
-                        .replyMarkup(markup3)
+                        .text(TEXT_BANK_SETTINGS_BTN)
+                        .replyMarkup(bankReplyMarkupWithChoose(
+                                saveToUserSettings(Bank.NBU.getDisplayName(), chatId)))
                         .build();
-
                 return new BotResponse(msg, BANK_CHOICE);
-
-            case ReplyMarkupBuilder.BACK:
+            }
+            case DATA_BACK_BTN -> {
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text("Налаштування")
+                        .text(TEXT_SETTINGS_MENU)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_SETTINGS);
-
-            case ReplyMarkupBuilder.BACKALL:
+            }
+            case DATA_BACK_MAIN_MENU_BTN -> {
                 msg = SendMessage.builder()
                         .chatId(chatId)
-                        .text("Головне меню")
+                        .text(TEXT_MAIN_MENU)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build();
                 return new BotResponse(msg, BotState.HANDLE_MAIN_MENU);
-
-            default:
+            }
+            default -> {
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text("Немає такої команди")
+                        .text(TEXT_EXCEPTION)
                         .replyMarkup(settingsReplyMarkup())
                         .build();
                 return new BotResponse(msg, this.getInvokedState());
+            }
         }
+    }
+
+    /**
+     * Save bank after user's choose to user's settings.
+     *
+     * @param bank choose bank
+     * @param chatId chatId
+     * @return the bank's list
+     */
+    public List<String> saveToUserSettings(String bank, Long chatId) {
+        UserSettings userSettings = settingsService.getUsersSettings(chatId);
+
+        List<String> banks = userSettings.getBank();
+
+        if (banks.contains(bank)) {
+            banks.remove(bank);
+        } else {
+            banks.add(bank);
+        }
+        if (banks.isEmpty()) {
+            banks.add(Bank.PRIVAT.getDisplayName());
+        }
+        settingsService.saveUserSettings(userSettings);
+        return banks;
     }
 }

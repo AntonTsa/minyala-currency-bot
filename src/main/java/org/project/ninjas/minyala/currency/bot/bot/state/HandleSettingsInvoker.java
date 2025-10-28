@@ -1,6 +1,17 @@
 package org.project.ninjas.minyala.currency.bot.bot.state;
 
-import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BANK_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_CURRENCY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_DECIMAL_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_NOTIFY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BACK_MAIN_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_EXCEPTION;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.bankReplyMarkupWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.decimalReplyMarkupWithChoose;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.mainMenuReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.notifyReplyMarkup;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ReplyMarkupBuilder.settingsReplyMarkup;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
@@ -24,11 +35,11 @@ public class HandleSettingsInvoker implements BotStateInvoker {
     public BotResponse invoke(Update update) {
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         return switch (update.getCallbackQuery().getData()) {
-            case "DECIMAL_CHOICE" -> handleDecimalButton(chatId);
-            case "BANK_CHOICE" -> handleBankButton(chatId);
-            case "CURRENCY_CHOICE" -> handleCurrencyButton(chatId);
-            case "NOTIFY_CHOICE" -> handleNotifyButton(chatId);
-            case "BACK" -> handleBackButton(chatId);
+            case DATA_DECIMAL_SETTINGS_BTN -> handleDecimalButton(chatId);
+            case DATA_BANK_SETTINGS_BTN -> handleBankButton(chatId);
+            case DATA_CURRENCY_SETTINGS_BTN -> handleCurrencyButton(chatId);
+            case DATA_NOTIFY_SETTINGS_BTN -> handleNotifyButton(chatId);
+            case DATA_BACK_BTN -> handleBackButton(chatId);
             default -> handleExceptionalCases(chatId);
         };
     }
@@ -44,7 +55,14 @@ public class HandleSettingsInvoker implements BotStateInvoker {
                 SendMessage.builder()
                         .chatId(chatId)
                         .text("Оберіть кількість знаків після коми")
-                        .replyMarkup(decimalReplyMarkup())
+                        .replyMarkup(
+                                decimalReplyMarkupWithChoose(String
+                                        .valueOf(settingsService
+                                        .getUsersSettings(chatId)
+                                        .getDecimalPlaces()
+                                        )
+                                )
+                        )
                         .build(),
                 BotState.HANDLE_DECIMAL_CHOICE
         );
@@ -61,7 +79,11 @@ public class HandleSettingsInvoker implements BotStateInvoker {
                 SendMessage.builder()
                         .chatId(chatId)
                         .text("Оберіть банк")
-                        .replyMarkup(bankReplyMarkup())
+                        .replyMarkup(bankReplyMarkupWithChoose(settingsService
+                                                .getUsersSettings(chatId)
+                                                .getBank()
+                                )
+                        )
                         .build(),
                 BotState.BANK_CHOICE
         );
@@ -112,7 +134,7 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         return new BotResponse(
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text("Головне меню")
+                        .text(TEXT_BACK_MAIN_BTN)
                         .replyMarkup(mainMenuReplyMarkup())
                         .build(),
                 BotState.HANDLE_MAIN_MENU
@@ -129,7 +151,7 @@ public class HandleSettingsInvoker implements BotStateInvoker {
         return new BotResponse(
                 SendMessage.builder()
                         .chatId(chatId)
-                        .text("Немає такої команди")
+                        .text(TEXT_EXCEPTION)
                         .replyMarkup(settingsReplyMarkup())
                         .build(),
                 this.getInvokedState()

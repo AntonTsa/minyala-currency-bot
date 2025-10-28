@@ -9,78 +9,135 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankRateService;
+import org.project.ninjas.minyala.currency.bot.banks.util.HttpClientProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Implementation of {@link BankRateService} for Monobank public API.
+ * Monobank implementation of {@link BankRateService}.
+ * Provides exchange rates with minimal in-memory caching (1 hour).
  */
 public class MonobankService implements BankRateService {
 
-    private static final String API_URL = "https://api.monobank.ua/bank/currency";
+    private static final Logger LOGGER = LoggerFactory.getLogger(MonobankService.class);
+    private static final MonobankService INSTANCE = new MonobankService();
 
-    @Override
-    public String getBankName() {
-        return "Monobank";
+    private static final String BANK_NAME = "Monobank";
+    private static final String API_URL = "https://api.monobank.ua/bank/currency";
+    private static HttpClient client;
+
+    private static final Duration CACHE_TTL = Duration.ofHours(1);
+
+    private volatile List<CurrencyRate> cachedRates;
+
+    private volatile Instant lastFetchAt;
+
+    private MonobankService() {
+    }
+
+    /**
+     * Lazily provides a shared {@link HttpClient} instance.
+     * This avoids static initialization before Mockito mocks are applied in tests.
+     *
+     * @return the shared HttpClient
+     */
+    private static HttpClient getClient() {
+        if (client == null) {
+            client = HttpClientProvider.getClient();
+        }
+        return client;
+    }
+
+    /**
+     * Returns the singleton instance of {@link MonobankService}.
+     *
+     * @return the single shared instance of this service
+     */
+    public static MonobankService getInstance() {
+        return INSTANCE;
     }
 
     @Override
-    public List<CurrencyRate> getRates() {
-        List<CurrencyRate> rates = new ArrayList<>();
-        HttpResponse<String> response;
+    public String getBankName() {
+        return BANK_NAME;
+    }
 
-        try (HttpClient client = HttpClient.newHttpClient()) {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(API_URL))
-                    .GET()
-                    .build();
+    /**
+     * Returns cached rates if valid; otherwise fetches from Monobank API.
+     */
+    @Override
+    public List<CurrencyRate> getRates() throws Exception {
+        Instant now = Instant.now();
+        List<CurrencyRate> current = cachedRates;
+        Instant fetchedAt = lastFetchAt;
 
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        if (current != null && fetchedAt != null
+                && Duration.between(fetchedAt, now).compareTo(CACHE_TTL) < 0) {
+            return current;
         }
+
+        synchronized (this) {
+            if (cachedRates != null && lastFetchAt != null
+                    && Duration.between(lastFetchAt, now).compareTo(CACHE_TTL) < 0) {
+                return cachedRates;
+            }
+            List<CurrencyRate> fresh = fetchFromApi();
+            cachedRates = fresh;
+            lastFetchAt = now;
+            return fresh;
+        }
+    }
+
+    /**
+     * Fetches data from Monobank API and converts to CurrencyRate list.
+     */
+    private List<CurrencyRate> fetchFromApi() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_URL))
+                .timeout(Duration.ofSeconds(15))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed to fetch Monobank API data: "
-                    + response.statusCode());
+            LOGGER.warn("Monobank API returned status {}", response.statusCode());
+            return List.of();
         }
 
-        JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
+        JsonArray arr = JsonParser.parseString(response.body()).getAsJsonArray();
+        List<CurrencyRate> result = new ArrayList<>(arr.size());
+        LocalDate today = LocalDate.now();
 
-        for (JsonElement el : jsonArray) {
-            JsonObject obj = el.getAsJsonObject();
-
-            int currencyCodeA = obj.get("currencyCodeA").getAsInt();
-            int currencyCodeB = obj.get("currencyCodeB").getAsInt();
-
-            // Only show currencies where base is UAH
-            if (currencyCodeB == 980) { // 980 = UAH ISO code
-                double rateBuy = obj.has("rateBuy") ? obj.get("rateBuy").getAsDouble() : 0.0;
-                double rateSell = obj.has("rateSell") ? obj.get("rateSell").getAsDouble() : 0.0;
-                double rateCross = obj.has("rateCross") ? obj.get("rateCross").getAsDouble() : 0.0;
-
-                String currency = switch (currencyCodeA) {
-                    case 840 -> "USD";
-                    case 978 -> "EUR";
-                    case 985 -> "PLN";
-                    case 826 -> "GBP";
-                    default -> String.valueOf(currencyCodeA);
-                };
-
-                rates.add(new CurrencyRate(
-                        getBankName(),
-                        currency,
-                        rateBuy,
-                        rateSell,
-                        rateCross,
-                        LocalDate.now()
-                ));
+        for (JsonElement el : arr) {
+            if (!el.isJsonObject()) {
+                continue;
             }
-        }
+            JsonObject o = el.getAsJsonObject();
+            int codeA = o.has("currencyCodeA") ? o.get("currencyCodeA").getAsInt() : 0;
+            int codeB = o.has("currencyCodeB") ? o.get("currencyCodeB").getAsInt() : 0;
+            if (codeB != 980) {
+                continue;
+            }
 
-        return rates;
+            String currency = String.valueOf(codeA);
+            double buy = getDouble(o, "rateBuy");
+            double sell = getDouble(o, "rateSell");
+            double cross = getDouble(o, "rateCross");
+
+            result.add(new CurrencyRate(BANK_NAME, currency, buy, sell, cross, today));
+        }
+        return result;
+    }
+
+    private static double getDouble(JsonObject o, String key) {
+        return o.has(key) && !o.get(key).isJsonNull() ? o.get(key).getAsDouble() : 0.0;
     }
 }

@@ -1,7 +1,24 @@
 package org.project.ninjas.minyala.currency.bot.bot.util;
 
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Banks.*;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Constants.Decimal.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.CHECKMARK;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_MAIN_MENU_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BANK_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_CURRENCY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_DECIMAL_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_GET_INFO_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_NOTIFY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_OFF_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_SETTINGS_MENU_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BACK_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BACK_MAIN_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_BANK_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_CURRENCY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_DECIMAL_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_GET_INFO_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_NOTIFY_SETTINGS_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_OFF_BTN;
+import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_SETTINGS_MENU;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +29,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
  * Utility class for building keyboard layouts.
  */
 public class ReplyMarkupBuilder {
-    /**
-     *  Button BACK.
-     */
-    public static final String BACK = "BACK";
-
-    /***/
-    public static final String BACKTEXT = "НАЗАД";
-
-    /**
-     *  Button BACK to main menu.
-     */
-    public static final String BACKALL = "BACKALL";
-
-    /***/
-    public static final String BACKALLTEXT = "ГОЛОВНЕ МЕНЮ";
 
     private ReplyMarkupBuilder() {
         throw new UnsupportedOperationException("Utility class");
@@ -41,13 +43,13 @@ public class ReplyMarkupBuilder {
         return new InlineKeyboardMarkup(
                 List.of(List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Отримати інформацію")
-                                        .callbackData("CURRENT_INFO_BTN")
+                                        .text(TEXT_GET_INFO_BTN)
+                                        .callbackData(DATA_GET_INFO_BTN)
                                         .build()),
                         List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Змінити налаштування")
-                                        .callbackData("SETTINGS_BTN")
+                                        .text(TEXT_SETTINGS_MENU)
+                                        .callbackData(DATA_SETTINGS_MENU_BTN)
                                         .build()
                         ))
         );
@@ -61,87 +63,59 @@ public class ReplyMarkupBuilder {
     public static InlineKeyboardMarkup settingsReplyMarkup() {
         return new InlineKeyboardMarkup(
                 List.of(
-                        List.of(btn("Кількість знаків після коми", "DECIMAL_CHOICE")),
-                        List.of(btn("Банк", "BANK_CHOICE")),
-                        List.of(btn("Валюти", "CURRENCY_CHOICE")),
-                        List.of(btn("Час оповіщення", "NOTIFY_CHOICE")),
-                        List.of(btn(BACKTEXT, BACK))
+                        List.of(btn(TEXT_DECIMAL_SETTINGS_BTN, DATA_DECIMAL_SETTINGS_BTN)),
+                        List.of(btn(TEXT_BANK_SETTINGS_BTN, DATA_BANK_SETTINGS_BTN)),
+                        List.of(btn(TEXT_CURRENCY_SETTINGS_BTN, DATA_CURRENCY_SETTINGS_BTN)),
+                        List.of(btn(TEXT_NOTIFY_SETTINGS_BTN, DATA_NOTIFY_SETTINGS_BTN)),
+                        List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN))
                 )
         );
     }
 
     /**
-     * Builds the decimal menu reply markup.
-     *
-     * @return the decimal inline keyboard markup
-     */
-    public static InlineKeyboardMarkup decimalReplyMarkup() {
-        return new InlineKeyboardMarkup(
-                List.of(
-                        List.of(btn(ONE.getDisplayName(), ONE.getDisplayName()),
-                                btn(btnWithChoose(TWO.getDisplayName()), TWO.getDisplayName()),
-                                btn(THREE.getDisplayName(), THREE.getDisplayName())),
-                        List.of(btn(BACKTEXT, BACK)),
-                        List.of(btn(BACKALLTEXT, BACKALL))
-                ));
-    }
-
-    /**
      * Builds the decimal menu With Choose reply markup.
      *
-     * @param btn1 first button
-     * @param btn2 second button
-     * @param btn3 third button
+     * @param choose choose decimal
      * @return the decimal inline keyboard markup
      */
-    public static InlineKeyboardMarkup decimalReplyMarkupWithChoose(
-            String btn1,
-            String btn2,
-            String btn3) {
-        return new InlineKeyboardMarkup(
-                List.of(
-                        List.of(btn(btn1, ONE.getDisplayName()),
-                                btn(btn2, TWO.getDisplayName()),
-                                btn(btn3, THREE.getDisplayName())),
-                        List.of(btn(BACKTEXT, BACK)),
-                        List.of(btn(BACKALLTEXT, BACKALL))
-                ));
-    }
+    public static InlineKeyboardMarkup decimalReplyMarkupWithChoose(String choose) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
 
-    /**
-     * Builds the bank menu reply markup.
-     *
-     * @return the bank inline keyboard markup
-     */
-    public static InlineKeyboardMarkup bankReplyMarkup() {
-        return new InlineKeyboardMarkup(
-                List.of(List.of(btn(btnWithChoose(PRIVAT.getDisplayName()), PRIVAT.getDisplayName())),
-                        List.of(btn(MONO.getDisplayName(), MONO.getDisplayName())),
-                        List.of(btn(NBU.getDisplayName(), NBU.getDisplayName())),
-                        List.of(btn(BACKTEXT, BACK)),
-                        List.of(btn(BACKALLTEXT, BACKALL))
-                ));
+        for (int decimal = 1; decimal < 4; decimal++) {
+            String dec = String.valueOf(decimal);
+            if (dec.contains(choose)) {
+                row.add(btn(btnWithChoose(dec), dec));
+            } else {
+                row.add(btn(dec, dec));
+            }
+        }
+        rows.add(row);
+        rows.add(List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)));
+        rows.add(List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN)));
+        return new InlineKeyboardMarkup(rows);
     }
 
     /**
      * Builds the bank menu reply markup With Choose.
      *
-     * @param btn1 first button
-     * @param btn2 second button
-     * @param btn3 third button
+     * @param choose choose bank
      * @return the bank inline keyboard markup
      */
-    public static InlineKeyboardMarkup bankReplyMarkupWithChoose(
-            String btn1,
-            String btn2,
-            String btn3) {
-        return new InlineKeyboardMarkup(
-                List.of(List.of(btn(btn1, PRIVAT.getDisplayName())),
-                        List.of(btn(btn2, MONO.getDisplayName())),
-                        List.of(btn(btn3, NBU.getDisplayName())),
-                        List.of(btn(BACKTEXT, BACK)),
-                        List.of(btn(BACKALLTEXT, BACKALL))
-                ));
+    public static InlineKeyboardMarkup bankReplyMarkupWithChoose(List<String> choose) {
+
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        for (Bank bank : Bank.values()) {
+            if (choose.contains(bank.getDisplayName())) {
+                rows.add(List.of(btn(btnWithChoose(bank.getDisplayName()), bank.name())));
+            } else {
+                rows.add(List.of(btn(bank.getDisplayName(), bank.name())));
+            }
+        }
+
+        rows.add(List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)));
+        rows.add(List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN)));
+        return new InlineKeyboardMarkup(rows);
     }
 
     /**
@@ -173,8 +147,13 @@ public class ReplyMarkupBuilder {
             }
         }
         rows.add(row);
-        rows.add(List.of(btn(BACKTEXT, BACK)));
-        rows.add(List.of(btn(BACKALLTEXT, BACKALL)));
+        if (choose == 0) {
+            rows.add(List.of(btn(btnWithChoose(TEXT_OFF_BTN), DATA_OFF_BTN)));
+        } else {
+            rows.add(List.of(btn(TEXT_OFF_BTN, DATA_OFF_BTN)));
+        }
+        rows.add(List.of(btn(TEXT_BACK_BTN, DATA_BACK_BTN)));
+        rows.add(List.of(btn(TEXT_BACK_MAIN_BTN, DATA_BACK_MAIN_MENU_BTN)));
 
         return new InlineKeyboardMarkup(rows);
     }
@@ -201,6 +180,6 @@ public class ReplyMarkupBuilder {
      * @return new text button.
      */
     public static String btnWithChoose(String text) {
-        return "✅ " + text;
+        return CHECKMARK + text;
     }
 }
