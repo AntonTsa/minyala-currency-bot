@@ -23,7 +23,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  *  Setting menu button handler.
  */
 @RequiredArgsConstructor
-public class HandleSettingsInvoker implements BotStateInvoker {
+public class HandleSettingsInvokerImpl implements BotStateInvoker {
     private final SettingsService settingsService;
 
     @Override
@@ -97,7 +97,7 @@ public class HandleSettingsInvoker implements BotStateInvoker {
      */
     private BotResponse handleCurrencyButton(long chatId) {
         // Delegate to the existing invoker logic
-        HandleCurrencyChoiceInvoker currencyHandler = new HandleCurrencyChoiceInvoker(settingsService);
+        HandleCurrencyChoiceInvokerImpl currencyHandler = new HandleCurrencyChoiceInvokerImpl(settingsService);
         return currencyHandler.invokeFromParent(chatId);
     }
 

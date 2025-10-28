@@ -23,7 +23,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 /***/
 @RequiredArgsConstructor
-public class HandleNotifyInvoker implements BotStateInvoker {
+public class HandleNotifyInvokerImpl implements BotStateInvoker {
 
     private final SettingsService settingsService;
 
