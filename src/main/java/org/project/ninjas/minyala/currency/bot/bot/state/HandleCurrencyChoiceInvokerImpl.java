@@ -30,7 +30,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
  * and navigate between menus.
  */
 @RequiredArgsConstructor
-public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
+public class HandleCurrencyChoiceInvokerImpl implements BotStateInvoker {
 
     /** List of available currencies for display and selection. */
     private static final List<String> AVAILABLE_CURRENCIES = List.of("USD", "EUR", "GBP");
