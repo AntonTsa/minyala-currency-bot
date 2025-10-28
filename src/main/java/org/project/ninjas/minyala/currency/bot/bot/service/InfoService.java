@@ -19,7 +19,7 @@ public class InfoService {
      * @return formatted text with exchange rates
      */
     public String getCurrencyInfo(UserSettings userSettings) {
-        if (userSettings.getBank() == null || userSettings.getBank().isEmpty()) {
+        if (userSettings.getBanks() == null || userSettings.getBanks().isEmpty()) {
             return "Не обрано жодного банку для відображення.";
         }
         if (userSettings.getCurrencies() == null || userSettings.getCurrencies().isEmpty()) {
@@ -31,7 +31,7 @@ public class InfoService {
         int digits = userSettings.getDecimalPlaces();
         StringBuilder text = new StringBuilder();
 
-        for (String bankDisplayName : userSettings.getBank()) {
+        for (String bankDisplayName : userSettings.getBanks()) {
             String internalBankName = switch (bankDisplayName) {
                 case "ПриватБанк" -> "PrivatBank";
                 case "МоноБанк" -> "Monobank";

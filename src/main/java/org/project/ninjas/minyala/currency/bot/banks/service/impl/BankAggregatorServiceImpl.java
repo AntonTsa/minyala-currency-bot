@@ -31,7 +31,11 @@ public class BankAggregatorServiceImpl implements BankAggregatorService {
         bankServices.add(NbuService.getInstance());
     }
 
-    /** Provides global singleton instance of this aggregator. */
+    /**
+     * Provides global singleton instance of this aggregator.
+     *
+     * @return instance of BankAggregatorServiceImpl
+     */
     public static BankAggregatorServiceImpl getInstance() {
         return INSTANCE;
     }

@@ -54,7 +54,7 @@ public class NotificationScheduler {
         );
     }
 
-    private void checkAndNotifyUsers() {
+    void checkAndNotifyUsers() {
         int currentHour = LocalTime.now().getHour();
         List<UserSettings> users = settingsService.getAllUserSettings();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -70,7 +70,7 @@ public class NotificationScheduler {
         }
     }
 
-    private void sendNotification(Long chatId, String message) {
+    void sendNotification(Long chatId, String message) {
         try {
             bot.execute(SendMessage.builder()
                     .chatId(chatId.toString())
@@ -82,7 +82,7 @@ public class NotificationScheduler {
         }
     }
 
-    private long computeInitialDelayMinutes() {
+    long computeInitialDelayMinutes() {
         int minutes = LocalTime.now().getMinute();
         return 60 - minutes; // скільки хвилин до наступної повної години
     }

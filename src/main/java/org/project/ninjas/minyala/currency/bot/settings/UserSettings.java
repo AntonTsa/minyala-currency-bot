@@ -11,10 +11,10 @@ import org.project.ninjas.minyala.currency.bot.bot.util.Bank;
 @Data
 public class UserSettings {
     private Long userId;
-    private int decimalPlaces = 2;
-    private List<String> bank;
-    private List<String> currencies = new ArrayList<>(List.of("USD"));
-    private String notifyTime = "09:00";
+    private int decimalPlaces;
+    private List<String> banks;
+    private List<String> currencies;
+    private String notifyTime;
 
     /**
      * Constructor to create default settings.
@@ -23,6 +23,9 @@ public class UserSettings {
      */
     public UserSettings(Long userId) {
         this.userId = userId;
-        this.bank = new ArrayList<>(List.of(Bank.PRIVAT.getDisplayName()));
+        this.decimalPlaces = 2;
+        this.banks = new ArrayList<>(List.of(Bank.PRIVAT.getDisplayName()));
+        this.currencies = new ArrayList<>(List.of("USD"));
+        this.notifyTime = "09:00";
     }
 }

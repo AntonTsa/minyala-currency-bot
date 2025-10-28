@@ -81,7 +81,7 @@ public class HandleSettingsInvokerImpl implements BotStateInvoker {
                         .text("Оберіть банк")
                         .replyMarkup(bankReplyMarkupWithChoose(settingsService
                                                 .getUsersSettings(chatId)
-                                                .getBank()
+                                                .getBanks()
                                 )
                         )
                         .build(),

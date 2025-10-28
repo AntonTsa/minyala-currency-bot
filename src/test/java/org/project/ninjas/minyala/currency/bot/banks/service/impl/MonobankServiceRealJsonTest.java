@@ -1,4 +1,4 @@
-package org.project.ninjas.minyala.currency.bot.banks;
+package org.project.ninjas.minyala.currency.bot.banks.service.impl;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
-import org.project.ninjas.minyala.currency.bot.banks.service.impl.MonobankService;
 import org.project.ninjas.minyala.currency.bot.banks.util.HttpClientProvider;
 
 /**
