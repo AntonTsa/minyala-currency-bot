@@ -30,7 +30,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
  * and navigate between menus.
  */
 @RequiredArgsConstructor
-public class HandleCurrencyChoiceInvokerImpl implements BotStateInvoker {
+public class HandleCurrencyChoiceInvoker implements BotStateInvoker {
 
     /** List of available currencies for display and selection. */
     private static final List<String> AVAILABLE_CURRENCIES = List.of("USD", "EUR", "GBP");
@@ -77,8 +77,8 @@ public class HandleCurrencyChoiceInvokerImpl implements BotStateInvoker {
             userSettings.setCurrencies(selectedCurrencies);
             settingsService.saveUserSettings(userSettings);
 
-            message = buildCurrencyMenu(chatId, selectedCurrencies,
-                    INSTRUCTION_TEXT_MSG);
+            message = buildCurrencyMenu(chatId, selectedCurrencies
+            );
             nextState = CURRENCY_CHOICE;
 
         } else if (DATA_BACK_BTN.equals(chosenButtonData)) {
@@ -101,8 +101,8 @@ public class HandleCurrencyChoiceInvokerImpl implements BotStateInvoker {
 
         } else {
             // Default: refresh the current menu
-            message = buildCurrencyMenu(chatId, selectedCurrencies,
-                    INSTRUCTION_TEXT_MSG);
+            message = buildCurrencyMenu(chatId, selectedCurrencies
+            );
             nextState = CURRENCY_CHOICE;
         }
 
@@ -120,20 +120,19 @@ public class HandleCurrencyChoiceInvokerImpl implements BotStateInvoker {
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
         List<String> selectedCurrencies = userSettings.getCurrencies();
 
-        SendMessage message = buildCurrencyMenu(chatId, selectedCurrencies,
-                INSTRUCTION_TEXT_MSG);
+        SendMessage message = buildCurrencyMenu(chatId, selectedCurrencies
+        );
         return new BotResponse(message, CURRENCY_CHOICE);
     }
 
     /**
      * Builds the currency selection menu with checkmarks (✅) for selected currencies.
      *
-     * @param chatId user chat identifier
+     * @param chatId     user chat identifier
      * @param currencies list of selected currencies
-     * @param text message text displayed above the menu
      * @return {@link SendMessage} with an {@link InlineKeyboardMarkup}
      */
-    private SendMessage buildCurrencyMenu(Long chatId, List<String> currencies, String text) {
+    private SendMessage buildCurrencyMenu(Long chatId, List<String> currencies) {
         // Build currency buttons dynamically
         List<InlineKeyboardButton> currencyButtons = AVAILABLE_CURRENCIES.stream()
                 .map(code -> {
@@ -153,7 +152,7 @@ public class HandleCurrencyChoiceInvokerImpl implements BotStateInvoker {
 
         return SendMessage.builder()
                 .chatId(chatId)
-                .text(text)
+                .text(HandleCurrencyChoiceInvoker.INSTRUCTION_TEXT_MSG)
                 .replyMarkup(markup)
                 .build();
     }

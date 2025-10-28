@@ -21,30 +21,39 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Monobank implementation of {@link BankRateService}.
- * Provides exchange rates with minimal in-memory caching (1 hour).
+ * National Bank of Ukraine (NBU) implementation of {@link BankRateService}.
+ * Provides official rates with minimal in-memory cache (1 hour).
  */
-public class MonobankService implements BankRateService {
+public class NbuServiceImpl implements BankRateService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MonobankService.class);
-    private static final MonobankService INSTANCE = new MonobankService();
+    private static final Logger LOGGER = LoggerFactory.getLogger(NbuServiceImpl.class);
+    private static final NbuServiceImpl INSTANCE = new NbuServiceImpl();
 
-    private static final String BANK_NAME = "Monobank";
-    private static final String API_URL = "https://api.monobank.ua/bank/currency";
-    private static HttpClient client;
-
+    private static final String BANK_NAME = "NBU";
+    private static final String API_URL =
+            "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
     private static final Duration CACHE_TTL = Duration.ofHours(1);
 
-    private volatile List<CurrencyRate> cachedRates;
+    private static HttpClient client;
 
+    private volatile List<CurrencyRate> cachedRates;
     private volatile Instant lastFetchAt;
 
-    private MonobankService() {
+    private NbuServiceImpl() {
+    }
+
+    /**
+     * Returns the singleton instance of {@link NbuServiceImpl}.
+     *
+     * @return the single shared instance of this service
+     */
+    public static NbuServiceImpl getInstance() {
+        return INSTANCE;
     }
 
     /**
      * Lazily provides a shared {@link HttpClient} instance.
-     * This avoids static initialization before Mockito mocks are applied in tests.
+     * Avoids static initialization before Mockito mocks are applied in tests.
      *
      * @return the shared HttpClient
      */
@@ -55,23 +64,11 @@ public class MonobankService implements BankRateService {
         return client;
     }
 
-    /**
-     * Returns the singleton instance of {@link MonobankService}.
-     *
-     * @return the single shared instance of this service
-     */
-    public static MonobankService getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public String getBankName() {
         return BANK_NAME;
     }
 
-    /**
-     * Returns cached rates if valid; otherwise fetches from Monobank API.
-     */
     @Override
     public List<CurrencyRate> getRates() throws Exception {
         Instant now = Instant.now();
@@ -95,9 +92,6 @@ public class MonobankService implements BankRateService {
         }
     }
 
-    /**
-     * Fetches data from Monobank API and converts to CurrencyRate list.
-     */
     private List<CurrencyRate> fetchFromApi() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL))
@@ -105,39 +99,59 @@ public class MonobankService implements BankRateService {
                 .GET()
                 .build();
 
-        HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
-
+        HttpResponse<String> response =
+                getClient().send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
-            LOGGER.warn("Monobank API returned status {}", response.statusCode());
+            LOGGER.warn("NBU API returned status {}", response.statusCode());
             return List.of();
         }
 
         JsonArray arr = JsonParser.parseString(response.body()).getAsJsonArray();
         List<CurrencyRate> result = new ArrayList<>(arr.size());
-        LocalDate today = LocalDate.now();
 
         for (JsonElement el : arr) {
             if (!el.isJsonObject()) {
                 continue;
             }
             JsonObject o = el.getAsJsonObject();
-            int codeA = o.has("currencyCodeA") ? o.get("currencyCodeA").getAsInt() : 0;
-            int codeB = o.has("currencyCodeB") ? o.get("currencyCodeB").getAsInt() : 0;
-            if (codeB != 980) {
-                continue;
-            }
+            String currency = o.has("cc") ? o.get("cc").getAsString() : "";
+            double rate = o.has("rate") ? safeDouble(o.get("rate")) : 0.0;
 
-            String currency = String.valueOf(codeA);
-            double buy = getDouble(o, "rateBuy");
-            double sell = getDouble(o, "rateSell");
-            double cross = getDouble(o, "rateCross");
-
-            result.add(new CurrencyRate(BANK_NAME, currency, buy, sell, cross, today));
+            LocalDate date = parseExchangeDate(o);
+            result.add(new CurrencyRate(BANK_NAME, currency, 0.0, 0.0, rate, date));
         }
+
         return result;
     }
 
-    private static double getDouble(JsonObject o, String key) {
-        return o.has(key) && !o.get(key).isJsonNull() ? o.get(key).getAsDouble() : 0.0;
+    private static LocalDate parseExchangeDate(JsonObject o) {
+        if (!o.has("exchangedate")) {
+            return LocalDate.now();
+        }
+        try {
+            String ds = o.get("exchangedate").getAsString();
+            String[] parts = ds.split("\\.");
+            if (parts.length == 3) {
+                int d = Integer.parseInt(parts[0]);
+                int m = Integer.parseInt(parts[1]);
+                int y = Integer.parseInt(parts[2]);
+                return LocalDate.of(y, m, d);
+            }
+        } catch (Exception ignore) {
+            // fallback to today
+        }
+        return LocalDate.now();
+    }
+
+    private static double safeDouble(JsonElement el) {
+        try {
+            return el.getAsDouble();
+        } catch (Exception ex) {
+            try {
+                return Double.parseDouble(el.getAsString().replace(',', '.').trim());
+            } catch (Exception ignore) {
+                return 0.0;
+            }
+        }
     }
 }
