@@ -16,7 +16,9 @@ import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelCo
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_MAIN_MENU_BTN;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_SETTINGS_MENU;
-import static org.project.ninjas.minyala.currency.bot.bot.util.Currency.*;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Currency.EUR;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Currency.GBP;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Currency.USD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +87,7 @@ class HandleCurrencyChoiceInvokerTest {
         assertEquals(CURRENCY_CHOICE, response.nextState());
         assertTrue(msg.getText().contains("Оберіть валюту"));
         verify(settingsServiceMock).saveUserSettings(settingsMock);
-        assertTrue(selected.contains("USD"));
+        assertTrue(selected.contains(USD));
     }
 
     @Test
