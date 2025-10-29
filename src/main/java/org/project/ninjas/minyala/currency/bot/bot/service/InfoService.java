@@ -5,6 +5,8 @@ import org.project.ninjas.minyala.currency.bot.banks.model.CurrencyRate;
 import org.project.ninjas.minyala.currency.bot.banks.service.BankAggregatorService;
 import org.project.ninjas.minyala.currency.bot.banks.service.impl.BankAggregatorServiceImpl;
 import org.project.ninjas.minyala.currency.bot.banks.util.CurrencyFormatter;
+import org.project.ninjas.minyala.currency.bot.bot.util.Bank;
+import org.project.ninjas.minyala.currency.bot.bot.util.Currency;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 
 /**
@@ -31,18 +33,17 @@ public class InfoService {
         int digits = userSettings.getDecimalPlaces();
         StringBuilder text = new StringBuilder();
 
-        for (String bankDisplayName : userSettings.getBanks()) {
-            String internalBankName = switch (bankDisplayName) {
-                case "ПриватБанк" -> "PrivatBank";
+        for (Bank bank : userSettings.getBanks()) {
+            String internalBankName = switch (bank.getDisplayName()) {
                 case "МоноБанк" -> "Monobank";
                 case "НБУ" -> "NBU";
                 default -> "PrivatBank";
             };
 
-            text.append("Курс у ").append(bankDisplayName).append(":\n");
+            text.append("Курс у ").append(bank.getDisplayName()).append(":\n");
             boolean foundCurrency = false;
 
-            for (String currency : userSettings.getCurrencies()) {
+            for (Currency currency : userSettings.getCurrencies()) {
                 boolean currencyFound = false;
 
                 for (CurrencyRate rate : allRates) {
@@ -55,7 +56,7 @@ public class InfoService {
                     };
 
                     if (internalBankName.equals(rate.getBankName())
-                            && currency.equalsIgnoreCase(normalizedCurrency)) {
+                            && normalizedCurrency.equalsIgnoreCase(currency.name())) {
                         currencyFound = true;
                         foundCurrency = true;
 
@@ -68,10 +69,14 @@ public class InfoService {
                         } else {
                             String buy = rate.getBuy() > 0
                                     ? CurrencyFormatter.format(rate.getBuy(), digits)
-                                    : "-";
+                                    : (rate.getRate() > 0)
+                                        ? CurrencyFormatter.format(rate.getRate(), digits)
+                                        : "-";
                             String sell = rate.getSell() > 0
                                     ? CurrencyFormatter.format(rate.getSell(), digits)
-                                    : "-";
+                                    : (rate.getRate() > 0)
+                                        ? CurrencyFormatter.format(rate.getRate(), digits)
+                                        : "-";
                             text.append(String.format(
                                     "%s/UAH - Купівля: %s; Продаж: %s%n",
                                     normalizedCurrency, buy, sell));
