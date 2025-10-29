@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
+import org.project.ninjas.minyala.currency.bot.bot.util.Bank;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -55,7 +56,7 @@ class HandleSettingsInvokerTest {
     private UserSettings mockUserSettings() {
         UserSettings settings = new UserSettings(123L);
         settings.setDecimalPlaces(2);
-        settings.setBanks(List.of("PrivatBank"));
+        settings.setBanks(List.of(Bank.PRIVAT));
         settings.setNotifyTime("10:00");
         return settings;
     }
