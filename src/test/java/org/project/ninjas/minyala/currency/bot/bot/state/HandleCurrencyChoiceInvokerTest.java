@@ -16,12 +16,16 @@ import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelCo
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.DATA_BACK_MAIN_MENU_BTN;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_MAIN_MENU;
 import static org.project.ninjas.minyala.currency.bot.bot.util.ButtonNameLabelConstants.TEXT_SETTINGS_MENU;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Currency.EUR;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Currency.GBP;
+import static org.project.ninjas.minyala.currency.bot.bot.util.Currency.USD;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.project.ninjas.minyala.currency.bot.bot.BotResponse;
+import org.project.ninjas.minyala.currency.bot.bot.util.Currency;
 import org.project.ninjas.minyala.currency.bot.settings.SettingsService;
 import org.project.ninjas.minyala.currency.bot.settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -52,7 +56,7 @@ class HandleCurrencyChoiceInvokerTest {
         return updateMock;
     }
 
-    private UserSettings mockUserSettings(List<String> currencies) {
+    private UserSettings mockUserSettings(List<Currency> currencies) {
         UserSettings settings = mock(UserSettings.class);
         given(settings.getCurrencies()).willReturn(currencies);
         return settings;
@@ -72,7 +76,7 @@ class HandleCurrencyChoiceInvokerTest {
         // GIVEN
         long chatId = 1L;
         Update updateMock = mockUpdate("USD", chatId);
-        List<String> selected = new ArrayList<>();
+        List<Currency> selected = new ArrayList<>();
         UserSettings settingsMock = mockUserSettings(selected);
 
         given(settingsServiceMock.getUsersSettings(chatId)).willReturn(settingsMock);
@@ -83,14 +87,14 @@ class HandleCurrencyChoiceInvokerTest {
         assertEquals(CURRENCY_CHOICE, response.nextState());
         assertTrue(msg.getText().contains("Оберіть валюту"));
         verify(settingsServiceMock).saveUserSettings(settingsMock);
-        assertTrue(selected.contains("USD"));
+        assertTrue(selected.contains(USD));
     }
 
     @Test
     void invoke_shouldToggleCurrencySelection_removeExisting() {
         long chatId = 2L;
         Update update = mockUpdate("EUR", chatId);
-        List<String> selected = new ArrayList<>(List.of("EUR"));
+        List<Currency> selected = new ArrayList<>(List.of(EUR));
 
         UserSettings settings = mockUserSettings(selected);
         given(settingsServiceMock.getUsersSettings(chatId)).willReturn(settings);
@@ -99,7 +103,7 @@ class HandleCurrencyChoiceInvokerTest {
 
         assertEquals(CURRENCY_CHOICE, response.nextState());
         verify(settingsServiceMock).saveUserSettings(settings);
-        assertFalse(selected.contains("EUR"));
+        assertFalse(selected.contains(EUR));
     }
 
     @Test
@@ -154,7 +158,7 @@ class HandleCurrencyChoiceInvokerTest {
     @Test
     void invokeFromParent_shouldReturnCurrencyMenu() {
         long chatId = 6L;
-        List<String> currencies = List.of("USD");
+        List<Currency> currencies = List.of(USD);
         UserSettings settings = mockUserSettings(currencies);
         given(settingsServiceMock.getUsersSettings(chatId)).willReturn(settings);
 
@@ -169,7 +173,7 @@ class HandleCurrencyChoiceInvokerTest {
     @Test
     void buildCurrencyMenu_shouldContainCheckmarksForSelectedCurrencies() throws Exception {
         long chatId = 7L;
-        List<String> selected = List.of("GBP");
+        List<Currency> selected = List.of(GBP);
         UserSettings settings = mockUserSettings(selected);
         given(settingsServiceMock.getUsersSettings(chatId)).willReturn(settings);
 

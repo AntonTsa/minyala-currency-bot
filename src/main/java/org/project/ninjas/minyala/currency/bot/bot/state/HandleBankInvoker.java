@@ -48,7 +48,7 @@ public class HandleBankInvoker implements BotStateInvoker {
                         .chatId(chatId.toString())
                         .text(TEXT_BANK_SETTINGS_BTN)
                         .replyMarkup(bankReplyMarkupWithChoose(
-                                saveToUserSettings(Bank.PRIVAT.getDisplayName(), chatId)))
+                                saveToUserSettings(Bank.PRIVAT, chatId)))
                         .build();
                 return new BotResponse(msg, BANK_CHOICE);
             }
@@ -57,7 +57,7 @@ public class HandleBankInvoker implements BotStateInvoker {
                         .chatId(chatId.toString())
                         .text(TEXT_BANK_SETTINGS_BTN)
                         .replyMarkup(bankReplyMarkupWithChoose(
-                                saveToUserSettings(Bank.MONO.getDisplayName(), chatId)))
+                                saveToUserSettings(Bank.MONO, chatId)))
                         .build();
                 return new BotResponse(msg, BANK_CHOICE);
             }
@@ -66,7 +66,7 @@ public class HandleBankInvoker implements BotStateInvoker {
                         .chatId(chatId.toString())
                         .text(TEXT_BANK_SETTINGS_BTN)
                         .replyMarkup(bankReplyMarkupWithChoose(
-                                saveToUserSettings(Bank.NBU.getDisplayName(), chatId)))
+                                saveToUserSettings(Bank.NBU, chatId)))
                         .build();
                 return new BotResponse(msg, BANK_CHOICE);
             }
@@ -104,10 +104,10 @@ public class HandleBankInvoker implements BotStateInvoker {
      * @param chatId chatId
      * @return the bank's list
      */
-    private List<String> saveToUserSettings(String bank, Long chatId) {
+    private List<Bank> saveToUserSettings(Bank bank, Long chatId) {
         UserSettings userSettings = settingsService.getUsersSettings(chatId);
 
-        List<String> banks = userSettings.getBanks();
+        List<Bank> banks = userSettings.getBanks();
 
         if (banks.contains(bank)) {
             banks.remove(bank);
@@ -115,7 +115,7 @@ public class HandleBankInvoker implements BotStateInvoker {
             banks.add(bank);
         }
         if (banks.isEmpty()) {
-            banks.add(Bank.PRIVAT.getDisplayName());
+            banks.add(Bank.PRIVAT);
         }
         settingsService.saveUserSettings(userSettings);
         return banks;

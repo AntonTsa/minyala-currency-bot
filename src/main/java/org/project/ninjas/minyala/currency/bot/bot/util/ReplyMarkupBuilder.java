@@ -102,11 +102,11 @@ public class ReplyMarkupBuilder {
      * @param choose choose bank
      * @return the bank inline keyboard markup
      */
-    public static InlineKeyboardMarkup bankReplyMarkupWithChoose(List<String> choose) {
+    public static InlineKeyboardMarkup bankReplyMarkupWithChoose(List<Bank> choose) {
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         for (Bank bank : Bank.values()) {
-            if (choose.contains(bank.getDisplayName())) {
+            if (choose.contains(bank)) {
                 rows.add(List.of(btn(btnWithChoose(bank.getDisplayName()), bank.name())));
             } else {
                 rows.add(List.of(btn(bank.getDisplayName(), bank.name())));

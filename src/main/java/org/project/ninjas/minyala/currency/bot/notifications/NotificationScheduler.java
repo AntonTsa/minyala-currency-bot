@@ -2,6 +2,7 @@ package org.project.ninjas.minyala.currency.bot.notifications;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,14 +59,21 @@ public class NotificationScheduler {
         int currentHour = LocalTime.now().getHour();
         List<UserSettings> users = settingsService.getAllUserSettings();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
         for (UserSettings user : users) {
-            if (!user.getNotifyTime().isEmpty()) {
-                int userHour = LocalTime.parse(user.getNotifyTime(), formatter).getHour();
+            String notifyTime = user.getNotifyTime();
+            if (notifyTime == null || notifyTime.isEmpty()) {
+                continue;
+            }
+
+            try {
+                int userHour = LocalTime.parse(notifyTime, formatter).getHour();
                 if (userHour == currentHour) {
-                    notificationPool.submit(() -> sendNotification(
-                            user.getUserId(), infoService.getCurrencyInfo(user)));
+                    notificationPool.submit(() ->
+                            sendNotification(user.getUserId(), infoService.getCurrencyInfo(user))
+                    );
                 }
+            } catch (DateTimeParseException e) {
+                LOGGER.error("Invalid time format for user {}: {}", user.getUserId(), notifyTime);
             }
         }
     }
